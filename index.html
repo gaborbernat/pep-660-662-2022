@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport" />
+
+    <title>🐍 Editable installations - PEP-660 vs PEP-662 🐍</title>
+
+    <link rel="icon" type="image/x-icon" href="img/bloomberg_logo_github.png" />
+    <link href="dist/reset.css" rel="stylesheet" />
+    <link href="dist/reveal.css" rel="stylesheet" />
+    <link href="dist/theme/solarized.css" id="theme" rel="stylesheet" />
+
+    <link href="plugin/highlight/monokai.css" id="highlight-theme" rel="stylesheet" />
+    <style>
+      .reveal pre {
+        margin-top: 0;
+        margin-bottom: 0;
+        box-shadow: none;
+      }
+
+      .reveal code,
+      pre > code {
+        font-family: "Inconsolata Patched", monospace;
+        text-rendering: geometricPrecision;
+        font-variant-ligatures: none;
+        line-height: 1;
+      }
+
+      @font-face {
+        font-family: "Inconsolata Patched";
+        src: local("Inconsolata Patched"),
+          url("dist/theme/fonts/Inconsolata Regular Nerd Font Complete Mono.otf") format("opentype");
+      }
+      .maintain img {
+        margin: 0;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="reveal">
+      <div class="slides">
+        <section>
+          <h1>How we standardized</h1>
+          <h1>editable installs</h1>
+          <h5>PEP-660 vs. PEP-662</h5>
+          <p>
+            <small
+              >by <a href="https://bernat.tech">Bernat Gabor</a> /
+              <a href="https://twitter.com/gjbernat">@gjbernat</a> /
+              <a href="https://github.com/bloomberg">Bloomberg</a>
+            </small>
+            <br />
+            <a href="https://gaborbernat.github.io/pep-660-662-2022/">https://gaborbernat.github.io/pep-660-662-2022</a>
+          </p>
+        </section>
+
+        <section>
+          <h3>Who am I?</h3>
+          <div>
+            <ul>
+              <li class="fragment">software engineer at Bloomberg (data ingestion and quality control)</li>
+              <li class="fragment">
+                OSS contributor <a href="https://github.com/gaborbernat">@ github/gaborbernat</a>, blog
+                <a href="https://bernat.tech/about/">bernat.tech</a>
+              </li>
+              <li class="fragment">
+                member of the <span style="color: orange">Py</span>thon <span style="color: orange">P</span>ackaging
+                <span style="color: orange">A</span>uthority (<span style="color: orange; font-style: italic"
+                  >virtualenv</span
+                >, <span style="color: orange; font-style: italic">build</span>,
+                <span style="color: orange; font-style: italic">pipx</span>,
+                <span style="color: darkorange; font-style: italic">tox</span> maintainer)
+              </li>
+              <li class="fragment">😎 parent to two Yorkshire Terriers</li>
+            </ul>
+            <div class="fragment">
+              <img
+                alt="Silky"
+                src="./img/silky_junior.jpg"
+                style="width: 60%; margin-left: auto; margin-right: auto; margin-bottom: 0"
+              />
+              <p style="font-size: 12px; margin: 0 0">Copyright of the above image owned by Bernat Gabor</p>
+            </div>
+          </div>
+        </section>
+
+        <section>
+          <h3>Maintainer (author *) of Python OSS projects</h3>
+          <ul class="maintain">
+            <li>
+              <a href="https://github.com/platformdirs/platformdirs"><strong>platformdirs</strong></a> -
+              <a href="https://pypistats.org/packages/platformdirs">
+                <img src="https://img.shields.io/pypi/dm/platformdirs?style=flat-square" alt="PyPI - Downloads" />
+              </a>
+            </li>
+            <li>
+              <a href="https://github.com/tox-dev/py-filelock"><strong>filelock</strong></a> –
+              <a href="https://pypistats.org/packages/filelock">
+                <img src="https://img.shields.io/pypi/dm/filelock?style=flat-square" alt="PyPI - Downloads" />
+              </a>
+            </li>
+
+            <li>
+              <a href="https://github.com/pypa/virtualenv"><strong>virtualenv</strong></a> -
+              <a href="https://pypistats.org/packages/virtualenv">
+                <img src="https://img.shields.io/pypi/dm/virtualenv?style=flat-square" alt="PyPI - Downloads" />
+              </a>
+            </li>
+            <li>
+              <a href="https://github.com/tox-dev/tox"><strong>tox</strong></a> -
+              <a href="https://pypistats.org/packages/tox">
+                <img src="https://img.shields.io/pypi/dm/tox?style=flat-square" alt="PyPI - Downloads" />
+              </a>
+            </li>
+            <li>
+              <a href="https://github.com/pypa/build">build</a> -
+              <a href="https://pypistats.org/packages/build"
+                ><img src="https://img.shields.io/pypi/dm/build?style=flat-square" alt="PyPI - Downloads"
+              /></a>
+            </li>
+            <li>
+              <a href="https://github.com/tox-dev/sphinx-autodoc-typehints"
+                ><strong>sphinx-autodoc-typehints</strong></a
+              >
+              -
+              <a href="https://pypistats.org/packages/sphinx-autodoc-typehints"
+                ><img
+                  src="https://img.shields.io/pypi/dm/sphinx-autodoc-typehints?style=flat-square"
+                  alt="PyPI - Downloads"
+              /></a>
+            </li>
+            <li>
+              <a href="https://github.com/pypa/pipx">pipx</a> -
+              <a href="https://pypistats.org/packages/pipx"
+                ><img src="https://img.shields.io/pypi/dm/pipx?style=flat-square" alt="PyPI - Downloads"
+              /></a>
+            </li>
+            <li>
+              <a href="https://github.com/pypa/flit">flit</a> -
+              <a href="https://pypistats.org/packages/flit"
+                ><img src="https://img.shields.io/pypi/dm/flit?style=flat-square" alt="PyPI - Downloads"
+              /></a>
+            </li>
+            <li>...</li>
+          </ul>
+        </section>
+
+        <section>
+          <h1>thank you</h1>
+          <div>
+            <img data-src="img/silky_junior.png" style="margin-bottom: 0; border-bottom: 0; width: 70%" />
+            <p style="font-size: 12px; margin: 0 0">Copyright of the above image owned by Bernat Gabor</p>
+          </div>
+          <p>
+            <a href="https://www.bernat.tech">https://www.bernat.tech</a>
+          </p>
+        </section>
+
+        <section>
+          <h1>we're hiring</h1>
+          <h3><a href="https://bloomberg.com/engineering">https://bloomberg.com/engineering</a></h3>
+
+          <p>
+            see <a href="https://TechAtBloomberg.com">TechAtBloomberg.com</a> /
+            <a href="https://twitter.com/techatbloomberg">@TechAtBloomberg</a>
+          </p>
+        </section>
+      </div>
+    </div>
+
+    <div style="position: absolute; bottom: 2px; right: 2px; width: 10em">
+      <p
+        style="
+          color: #767676;
+          font-family: Helvetica, sans-serif;
+          font-weight: bold;
+          font-size: 1.75em;
+          margin: 0 2px 2px 0;
+          text-align: center;
+        "
+      >
+        Bloomberg
+      </p>
+      <p style="text-align: center; font-weight: bold; font-size: 0.7em; margin: 0 auto">
+        &copy; 2022 Bloomberg Finance L.P. <br />All rights reserved.
+      </p>
+    </div>
+
+    <script src="dist/reveal.js"></script>
+    <script src="plugin/notes/notes.js"></script>
+    <script src="plugin/highlight/highlight.js"></script>
+    <script src="plugin/menu/menu.js"></script>
+    <script src="plugin/zoom/zoom.js"></script>
+    <script>
+      Reveal.initialize({
+        width: 1600,
+        height: 900,
+        margin: 0.02,
+        minScale: 0.2,
+        maxScale: 3.0,
+        hash: true,
+        dependencies: [
+          { src: "plugin/highcharts.js" },
+          { src: "plugin/anything/anything.js" },
+          { src: "plugin/menu/menu.js" },
+        ],
+        history: true,
+        previewLinks: true,
+        navigationMode: "linear",
+        transition: "none",
+        viewDistance: 10,
+        mobileViewDistance: 6,
+        controls: false,
+        controlsTutorial: false,
+        progress: false,
+        plugins: [RevealHighlight, RevealNotes, RevealZoom],
+        anything: [
+          {
+            className: "plot",
+            initialize: function (container, options) {
+              Highcharts.chart(container, options);
+            },
+          },
+        ],
+      });
+    </script>
+  </body>
+</html>

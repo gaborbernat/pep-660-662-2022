@@ -1,0 +1,19 @@
+repos:
+  - repo: git@bbgithub.dev.bloomberg.com:pre-commit/mirrors-prettier.git
+    rev: "v2.5.1"
+    hooks:
+      - id: prettier
+        additional_dependencies:
+          - prettier@2.5.1
+          - "@prettier/plugin-xml@1.2.0"
+        args: ["--print-width=120", "--prose-wrap=always"]
+        exclude: ^(css/.*|dist/.*|plugin/.*)$
+  - repo: git@bbgithub.dev.bloomberg.com:pre-commit/markdownlint-cli.git
+    rev: v0.31.1
+    hooks:
+      - id: markdownlint
+        exclude: ^(css/.*|dist/.*|plugin/.*)$
+  - repo: meta
+    hooks:
+      - id: check-hooks-apply
+      - id: check-useless-excludes
