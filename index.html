@@ -10,14 +10,11 @@
     <link rel="icon" type="image/x-icon" href="img/bloomberg_logo_github.png" />
     <link href="dist/reset.css" rel="stylesheet" />
     <link href="dist/reveal.css" rel="stylesheet" />
-    <link href="dist/theme/solarized.css" id="theme" rel="stylesheet" />
+    <link href="dist/theme/white.css" id="theme" rel="stylesheet" />
     <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
 
-    <link href="plugin/highlight/monokai.css" id="highlight-theme" rel="stylesheet" />
+    <link href="plugin/highlight/github.css" id="highlight-theme" rel="stylesheet" />
     <style>
-      mark {
-        background-color: #4c4c4c !important;
-      }
       .reveal pre {
         margin-top: 0;
         margin-bottom: 0;
@@ -159,7 +156,7 @@
           <h3>What is an editable installation?</h3>
           <ul>
             <li>
-              Let there be the following Python project:
+              Let there be the following Python project
               <pre><code class="lang-bash" data-trim data-noescape>
                  .
                 ├──  pyproject.toml
@@ -169,7 +166,9 @@
               </code></pre>
             </li>
             <li>
-              <span style="font-style: italic">pyproject.toml</span>
+              <span style="font-style: italic"
+                >pyproject.toml <a href="https://peps.python.org/pep-0621/">(PEP-621 style)</a></span
+              >
               <pre><code class="lang-toml" data-trim data-noescape>
               [build-system]
               build-backend = "hatchling.build"
@@ -181,7 +180,7 @@
               </code></pre>
             </li>
             <li>
-              <span style="font-style: italic">demo/__init__.py</span>
+              <span style="font-style: italic">src/demo/__init__.py</span>
               <pre><code class="lang-python" data-trim data-noescape>
               def say_hi(name: str) -> None:
                 print(f"Hello {name}")
@@ -203,8 +202,8 @@
           <h3>What is an editable installation?</h3>
           <ol>
             To test the library we need to install it in an isolated virtual environment, for example:
-            <li>
-              Create isolated virtual environment:
+            <li class="fragment">
+              create isolated virtual environment
               <pre><code class="lang-bash" data-trim data-noescape>
               $ virtualenv venv --clear --no-wheel --no-setuptools --activators ""
               created virtual environment CPython3.10.4.final.0-64 in 88ms
@@ -213,8 +212,8 @@
                   added seed packages: pip==22.0.4
               </code></pre>
             </li>
-            <li>
-              Install the library:
+            <li class="fragment">
+              install the library
               <pre><code class="lang-bash" data-trim data-noescape>
                 $ venv/bin/pip install .
                 Processing /tmp/prj
@@ -223,15 +222,15 @@
                   Preparing metadata (pyproject.toml) ... done
                 Building wheels for collected packages: demo
                   Building wheel for demo (pyproject.toml) ... done
-                  Created wheel for demo: filename=demo-1.0-py2.py3-none-any.whl size=1089 sha256=4af9f4008bef1f029f9ae06fdd752a1e36c
-                  Stored in directory: /tmp/pip-ephem-wheel-cache-1t02m0nm/wheels/41/8a/ba/ffb94b3ccf1b5c11339bf57ad6563
+                  Created wheel for demo: filename=demo-1.0-py2.py3-none-any.whl size=1089 sha256=4af9f4008bef1f029
+                  Stored in directory: /tmp/pip-ephem-wheel-cache-1t02m0nm/wheels/41/8a/ba/ffb94b3ccf1b5c11339
                 Successfully built demo
                 Installing collected packages: demo
                 Successfully installed demo-1.0
                 </code></pre>
             </li>
-            <li>
-              Run the test code
+            <li class="fragment">
+              run the test code
               <pre><code class="lang-bash" data-trim data-noescape>
               $ venv/bin/python -c 'from demo import say_hi; say_hi("Me")'
               Hello Me
@@ -245,7 +244,7 @@
           <ul>
             What will happen when I change the library code inside the projects soure directory?
             <li>
-              <span style="font-style: italic">demo/__init__.py</span>
+              change <span style="font-style: italic">src/demo/__init__.py</span>
               <pre><code class="lang-python" data-trim data-noescape>
               def say_hi(name: str) -> None:
                 print(f"Hello {name}<mark>!</mark>")
@@ -260,7 +259,7 @@
             </li>
             <div class="fragment">
               <li>
-                Install the library:
+                install the library
                 <pre><code class="lang-bash" data-trim data-noescape>
                   $ venv/bin/pip install .
                   Processing /tmp/prj
@@ -269,15 +268,15 @@
                     Preparing metadata (pyproject.toml) ... done
                   Building wheels for collected packages: demo
                     Building wheel for demo (pyproject.toml) ... done
-                    Created wheel for demo: filename=demo-1.0-py2.py3-none-any.whl size=1089 sha256=4af9f4008bef1f029f9ae06fdd752a1e36c
-                    Stored in directory: /tmp/pip-ephem-wheel-cache-1t02m0nm/wheels/41/8a/ba/ffb94b3ccf1b5c11339bf57ad6563
+                    Created wheel for demo: filename=demo-1.0-py2.py3-none-any.whl size=1089 sha256=4af9f4008bef1f029
+                    Stored in directory: /tmp/pip-ephem-wheel-cache-1t02m0nm/wheels/41/8a/ba/ffb94b3ccf1b5c11339
                   Successfully built demo
                   Installing collected packages: demo
                   Successfully installed demo-1.0
                   </code></pre>
               </li>
               <li>
-                Run the test code
+                run the test code
                 <pre><code class="lang-bash" data-trim data-noescape>
                 $ venv/bin/python -c 'from demo import say_hi; say_hi("Me")'
                 Hello Me!
@@ -313,7 +312,7 @@
             Editable install ensures subsequent code changes take effect without a reinstallation
             <div class="fragment">
               <li>
-                Install the library in editable mode:
+                install the library in editable mode
                 <pre><code class="lang-bash" data-trim data-noescape>
                   $ venv/bin/pip install <mark>-e</mark> .
                   Processing /tmp/prj
@@ -337,7 +336,7 @@
                 </code></pre>
               </li>
               <li>
-                <span style="font-style: italic">demo/__init__.py</span>
+                change <span style="font-style: italic">src/demo/__init__.py</span>
                 <pre><code class="lang-python" data-trim data-noescape>
                 def say_hi(name: str) -> None:
                   print(f"Hello {name}<mark>!</mark>")
@@ -362,17 +361,18 @@
           <h2>Prior art</h2>
           <ul>
             <li>
-              First introduced in <span style="font-style: italic">distutils</span> and inherited by
-              <span style="font-style: italic">setuptools</span>: under the interface
+              Initially introduced with <span style="font-style: italic">distutils</span> and inherited by
+              <span style="font-style: italic">setuptools</span> under the interface
               <pre><code class="lang-bash" data-trim data-noescape>
               $ python setup.py develop
               </code></pre>
             </li>
             <li>
-              Until <a href="https://pip.pypa.io/en/stable/news/#v21-3">pip 21.3 (releaserd on 2021-10-11)</a>:
+              Used by
+              <a href="https://pip.pypa.io/en/stable/news/#v21-3">pip until version 21.3 (released on 2021-10-11)</a>:
               <pre><code class="lang-bash" data-trim data-noescape>
-              $ python -m pip install -e project
-              # under the hood calls - python setup.py develop
+              $ python -m pip install -e /path/to/project
+              # under the hood calls - <mark>python setup.py develop with current working directory of /path/to/project</mark>
               </code></pre>
             </li>
           </ul>
@@ -480,11 +480,11 @@
           <pre class="fragment"><code class="lang-bash" data-trim data-noescape>
 
             $ lsd --tree venv/lib/python3.10/site-packages/demo*
-             demo
+             venv/lib/python3.10/site-packages/demo
             ├──  __init__.py
             └──  __pycache__
               └──  __init__.cpython-310.pyc
-             demo-1.0.dist-info
+             venv/lib/python3.10/site-packages/demo-1.0.dist-info
             ├──  direct_url.json
             ├──  entry_points.txt
             ├──  INSTALLER
@@ -526,11 +526,11 @@
           <pre><code class="lang-bash" data-trim data-noescape>
 
           $ lsd --tree venv/lib/python3.10/site-packages/demo*
-          <mark> demo
-            ├──  __init__.py
-            └──  __pycache__
-              └──  __init__.cpython-310.pyc</mark>
-           demo-1.0.dist-info
+          <mark> venv/lib/python3.10/site-packages/demo
+          ├──  __init__.py
+          └──  __pycache__
+            └──  __init__.cpython-310.pyc</mark>
+           venv/lib/python3.10/site-packages/demo-1.0.dist-info
           ├──  direct_url.json
           ├──  entry_points.txt
           ├──  INSTALLER
@@ -572,11 +572,11 @@
           <pre><code class="lang-bash" data-trim data-noescape>
 
             $ lsd --tree venv/lib/python3.10/site-packages/demo*
-             demo
+             venv/lib/python3.10/site-packages/demo
             ├──  __init__.py
             └──  __pycache__
               └──  __init__.cpython-310.pyc
-            <mark> demo-1.0.dist-info
+            <mark> venv/lib/python3.10/site-packages/demo-1.0.dist-info
             ├──  direct_url.json
             ├──  entry_points.txt
             ├──  INSTALLER
@@ -644,7 +644,7 @@
           <br />
 
           <pre><code class="lang-bash" data-trim data-noescape>
-            $ cat venv/lib/python3.10/site-packages/easy-install.pth
+            $ cat <mark>venv/lib/python3.10/site-packages/easy-install.pth</mark>
             /tmp/prj/src
             </code></pre>
           <br />
@@ -665,7 +665,198 @@
         </section>
 
         <section>
-          <h1>Drawback of the priort art</h1>
+          <h2>Prior art - Editable installation</h2>
+          <pre><code class="lang-bash" data-trim data-noescape>
+             .
+            ├──  setup.py
+            └──<mark>  src</mark>
+              ├──  demo
+              │  └──  __init__.py
+              └──  demo.egg-info
+                  ├──  dependency_links.txt
+                  ├──  PKG-INFO
+                  ├──  SOURCES.txt
+                  └──  top_level.txt
+            </code></pre>
+
+          <br />
+
+          <pre><code class="lang-bash" data-trim data-noescape>
+            $ cat venv/lib/python3.10/site-packages/easy-install.pth
+            <mark>/tmp/prj/src</mark>
+            </code></pre>
+          <br />
+          <pre><code class="lang-bash" data-trim data-noescape>
+          $ venv/bin/python -m site
+          sys.path = [
+              '/tmp/prj',
+              '/usr/lib/python310.zip',
+              '/usr/lib/python3.10',
+              '/usr/lib/python3.10/lib-dynload',
+              '/tmp/prj/venv/lib/python3.10/site-packages',
+              <mark>'/tmp/prj/src',</mark>
+          ]
+          USER_BASE: '/home/bernat/.local' (exists)
+          USER_SITE: '/home/bernat/.local/lib/python3.10/site-packages' (exists)
+          ENABLE_USER_SITE: False
+          </code></pre>
+        </section>
+
+        <section>
+          <h1>Drawbacks of the prior art</h1>
+        </section>
+
+        <section>
+          <h3>Files to add to package not validated</h3>
+          <pre><code class="lang-python" data-trim data-noescape>
+          from setuptools import setup
+
+          setup(
+              name="demo",
+              version="1.0",
+              package_dir={"": "src"},
+              <mark>packages=["demo"]</mark>,
+          )
+          </code></pre>
+          <br />
+          <pre><code class="lang-bash" data-trim data-noescape>
+           .
+          ├──  setup.py
+          └──  src
+            ├──  demo
+            │  └──  __init__.py  
+            ├── <mark> magic</mark>
+            │  └── <mark> __init__.py</mark>
+            └──  demo.egg-info
+                ├──  dependency_links.txt
+                ├──  PKG-INFO
+                ├──  SOURCES.txt
+                └──  top_level.txt
+          </code></pre>
+          <ul>
+            <li>
+              editable installation will pick up <span style="font-style: italic; color: gray">import magic</span>
+            </li>
+            <li>
+              normal installation will not pick package magic
+              <span style="font-style: italic; color: gray">import magic</span>
+            </li>
+          </ul>
+        </section>
+
+        <section>
+          <h3>Files to exclude from package not validated</h3>
+          <pre><code class="lang-python" data-trim data-noescape>
+            from setuptools import setup
+  
+            setup(
+                name="demo",
+                version="1.0",
+                package_dir={"": "src"},
+                packages=["demo"],
+                <mark>exclude=["demo.tests"],</mark>
+            )
+            </code></pre>
+          <br />
+          <pre><code class="lang-bash" data-trim data-noescape>
+             .
+            ├──  setup.py
+            └──  src
+              ├──  demo
+              │  ├──   __init__.py
+              │  └──   <mark>tests</mark>
+              │     └── <mark> __init__.py</mark>
+              └──  demo.egg-info
+                  ├──  dependency_links.txt
+                  ├──  PKG-INFO
+                  ├──  SOURCES.txt
+                  └──  top_level.txt
+            </code></pre>
+          <ul>
+            <li>
+              editable installation will allow to run
+              <span style="font-style: italic; color: gray">import demo.tests</span>
+            </li>
+            <li>
+              normal installation will fail
+              <span style="font-style: italic; color: gray">import demo.tests</span>
+            </li>
+          </ul>
+        </section>
+
+        <section>
+          <h3>No support for generated code</h3>
+          <ul>
+            <li>
+              you get JSON/OpenAPI schema to a service - generate Python objects from it
+              <pre><code class="lang-json" data-trim data-noescape>            
+                {
+                  "type": "object",
+                  "properties": {
+                    "firstName": {
+                      "type": "string",
+                      "description": "The person's first name."
+                    }
+                  }
+                }
+              </code></pre>
+            </li>
+            <li>
+              for example PyDantic objects via
+              <a href="https://pypi.org/project/datamodel-code-generator/">datamodel-code-generator</a>
+              <pre><code class="lang-python" data-trim data-noescape>            
+                $ datamodel-codegen --input schema.json
+                # generated by datamodel-codegen:
+                #   filename:  schema.json
+                #   timestamp: 2022-04-17T15:16:32+00:00
+
+                from __future__ import annotations
+
+                from typing import Optional
+
+                from pydantic import BaseModel, Field
+
+
+                class Model(BaseModel):
+                    firstName: Optional[str] = Field(None, description="The person's first name.")
+              </code></pre>
+            </li>
+          </ul>
+        </section>
+
+        <section>
+          <h3>No support for C-extensions</h3>
+          <ul>
+            <li>
+              for example, a <a href="https://cython.org/">Cython powered project</a>
+
+              <pre><code class="lang-bash" data-trim data-noescape>
+                 .
+                ├──  setup.py
+                └──  src
+                  └──  demo
+                     ├──   __init__.py
+                     └──  <mark> _demo.pyx</mark>  
+                </code></pre>
+            </li>
+            <li class="fragment">
+              an editable build generates (compiles) native code at install time only
+              <pre><code class="lang-bash" data-trim data-noescape>
+                 .
+                ├──  setup.py
+                └──  src
+                  ├──  demo
+                  │  ├──   __init__.py
+                  │  ├──   _demo.pyx
+                  │  └──  <mark>  _demo.cpython-310-x86_64-linux-gnu.so*</mark>
+                  └──  <mark>demo.egg-info</mark>
+                      ├──  dependency_links.txt
+                      ├──  PKG-INFO
+                      ├──  SOURCES.txt
+                      └──  top_level.txt
+                </code></pre>
+            </li>
+          </ul>
         </section>
 
         <section>
