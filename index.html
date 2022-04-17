@@ -6,13 +6,18 @@
 
     <title>🐍 Editable installations - PEP-660 vs PEP-662 🐍</title>
 
+    <script type="text/javascript" src="https://livejs.com/live.js"></script>
     <link rel="icon" type="image/x-icon" href="img/bloomberg_logo_github.png" />
     <link href="dist/reset.css" rel="stylesheet" />
     <link href="dist/reveal.css" rel="stylesheet" />
     <link href="dist/theme/solarized.css" id="theme" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
 
     <link href="plugin/highlight/monokai.css" id="highlight-theme" rel="stylesheet" />
     <style>
+      mark {
+        background-color: #4c4c4c !important;
+      }
       .reveal pre {
         margin-top: 0;
         margin-bottom: 0;
@@ -151,7 +156,202 @@
         </section>
 
         <section>
-          <h1>Prior art</h1>
+          <h3>What is an editable installation?</h3>
+          <ul>
+            <li>
+              Let there be the following Python project:
+              <pre><code class="lang-bash" data-trim data-noescape>
+                 .
+                ├──  pyproject.toml
+                └──  src
+                   └──  demo
+                      └──  __init__.py
+              </code></pre>
+            </li>
+            <li>
+              <span style="font-style: italic">pyproject.toml</span>
+              <pre><code class="lang-toml" data-trim data-noescape>
+              [build-system]
+              build-backend = "hatchling.build"
+              requires = ["hatchling>=0.14"]
+
+              [project]
+              name = "demo"
+              version = "1.0"
+              </code></pre>
+            </li>
+            <li>
+              <span style="font-style: italic">demo/__init__.py</span>
+              <pre><code class="lang-python" data-trim data-noescape>
+              def say_hi(name: str) -> None:
+                print(f"Hello {name}")
+              </code></pre>
+            </li>
+            <li class="fragment">
+              How do we run it?
+              <pre><code class="lang-bash" data-trim data-noescape>
+              $ python -c 'from demo import say_hi; say_hi("Me")'
+              Traceback (most recent call last):
+                File "&lt;string&gt;", line 1, in &lt;module&gt;
+              ModuleNotFoundError: No module named 'demo'
+              </code></pre>
+            </li>
+          </ul>
+        </section>
+
+        <section>
+          <h3>What is an editable installation?</h3>
+          <ol>
+            To test the library we need to install it in an isolated virtual environment, for example:
+            <li>
+              Create isolated virtual environment:
+              <pre><code class="lang-bash" data-trim data-noescape>
+              $ virtualenv venv --clear --no-wheel --no-setuptools --activators ""
+              created virtual environment CPython3.10.4.final.0-64 in 88ms
+                creator CPython3Posix(dest=/tmp/prj/venv, clear=True, no_vcs_ignore=False, global=False)
+                seeder FromAppData(download=False, pip=bundle, via=copy, app_data_dir=/tmp/virtualenv)
+                  added seed packages: pip==22.0.4
+              </code></pre>
+            </li>
+            <li>
+              Install the library:
+              <pre><code class="lang-bash" data-trim data-noescape>
+                $ venv/bin/pip install .
+                Processing /tmp/prj
+                  Installing build dependencies ... done
+                  Getting requirements to build wheel ... done
+                  Preparing metadata (pyproject.toml) ... done
+                Building wheels for collected packages: demo
+                  Building wheel for demo (pyproject.toml) ... done
+                  Created wheel for demo: filename=demo-1.0-py2.py3-none-any.whl size=1089 sha256=4af9f4008bef1f029f9ae06fdd752a1e36c
+                  Stored in directory: /tmp/pip-ephem-wheel-cache-1t02m0nm/wheels/41/8a/ba/ffb94b3ccf1b5c11339bf57ad6563
+                Successfully built demo
+                Installing collected packages: demo
+                Successfully installed demo-1.0
+                </code></pre>
+            </li>
+            <li>
+              Run the test code
+              <pre><code class="lang-bash" data-trim data-noescape>
+              $ venv/bin/python -c 'from demo import say_hi; say_hi("Me")'
+              Hello Me
+              </code></pre>
+            </li>
+          </ol>
+        </section>
+
+        <section>
+          <h3>What is an editable installation?</h3>
+          <ul>
+            What will happen when I change the library code inside the projects soure directory?
+            <li>
+              <span style="font-style: italic">demo/__init__.py</span>
+              <pre><code class="lang-python" data-trim data-noescape>
+              def say_hi(name: str) -> None:
+                print(f"Hello {name}<mark>!</mark>")
+              </code></pre>
+            </li>
+            <li>
+              and run the test code again
+              <pre><code class="lang-bash" data-trim data-noescape>
+              $ venv/bin/python -c 'from demo import say_hi; say_hi("Me")'
+              Hello Me
+              </code></pre>
+            </li>
+            <div class="fragment">
+              <li>
+                Install the library:
+                <pre><code class="lang-bash" data-trim data-noescape>
+                  $ venv/bin/pip install .
+                  Processing /tmp/prj
+                    Installing build dependencies ... done
+                    Getting requirements to build wheel ... done
+                    Preparing metadata (pyproject.toml) ... done
+                  Building wheels for collected packages: demo
+                    Building wheel for demo (pyproject.toml) ... done
+                    Created wheel for demo: filename=demo-1.0-py2.py3-none-any.whl size=1089 sha256=4af9f4008bef1f029f9ae06fdd752a1e36c
+                    Stored in directory: /tmp/pip-ephem-wheel-cache-1t02m0nm/wheels/41/8a/ba/ffb94b3ccf1b5c11339bf57ad6563
+                  Successfully built demo
+                  Installing collected packages: demo
+                  Successfully installed demo-1.0
+                  </code></pre>
+              </li>
+              <li>
+                Run the test code
+                <pre><code class="lang-bash" data-trim data-noescape>
+                $ venv/bin/python -c 'from demo import say_hi; say_hi("Me")'
+                Hello Me!
+                </code></pre>
+              </li>
+            </div>
+          </ul>
+        </section>
+
+        <section>
+          <h3>What is an editable installation?</h3>
+          <ul>
+            <li>
+              Having to install the project after every code change slows down development <br />
+              <div class="fragment">
+                <img
+                  data-src="img/better_way.gif"
+                  style="margin-left: auto; margin-right: auto; display: block; width: 50%"
+                />
+                <p style="font-size: 12px; margin-left: auto; margin-right: auto; display: block; width: 25%">
+                  Copyright of the above image owned by
+                  <a href="https://www.streamerclips.com/gifs/lepsi/welltododamagedcollie">StreamClips</a>
+                </p>
+              </div>
+            </li>
+          </ul>
+        </section>
+
+        <section>
+          <h3>What is an editable installation?</h3>
+
+          <ul>
+            Editable install ensures subsequent code changes take effect without a reinstallation
+            <div class="fragment">
+              <li>
+                Install the library in editable mode:
+                <pre><code class="lang-bash" data-trim data-noescape>
+                  $ venv/bin/pip install <mark>-e</mark> .
+                  Processing /tmp/prj
+                    Installing build dependencies ... done
+                    Getting requirements to build wheel ... done
+                    Preparing metadata (pyproject.toml) ... done
+                  Building wheels for collected packages: demo
+                    Building wheel for demo (pyproject.toml) ... done
+                    Created wheel for demo: filename=demo-1.0-py2.py3-none-any.whl size=1089 sha256=4af9f4008bef1f029f9ae06fdd752a1e36c
+                    Stored in directory: /tmp/pip-ephem-wheel-cache-1t02m0nm/wheels/41/8a/ba/ffb94b3ccf1b5c11339bf57ad6563
+                  Successfully built demo
+                  Installing collected packages: demo
+                  Successfully installed demo-1.0
+                  </code></pre>
+              </li>
+              <li>
+                run the test code
+                <pre><code class="lang-bash" data-trim data-noescape>
+                $ venv/bin/python -c 'from demo import say_hi; say_hi("Me")'
+                Hello Me
+                </code></pre>
+              </li>
+              <li>
+                <span style="font-style: italic">demo/__init__.py</span>
+                <pre><code class="lang-python" data-trim data-noescape>
+                def say_hi(name: str) -> None:
+                  print(f"Hello {name}<mark>!</mark>")
+                </code></pre>
+              </li>
+              <li>
+                run the test code
+                <pre><code class="lang-bash" data-trim data-noescape>
+                $ venv/bin/python -c 'from demo import say_hi; say_hi("Me")'
+                Hello Me!
+                </code></pre>
+              </li>
+            </div>
+          </ul>
         </section>
 
         <section>
@@ -159,11 +359,322 @@
         </section>
 
         <section>
-          <h1>Troubles with the priort art solution</h1>
+          <h2>Prior art</h2>
+          <ul>
+            <li>
+              First introduced in <span style="font-style: italic">distutils</span> and inherited by
+              <span style="font-style: italic">setuptools</span>: under the interface
+              <pre><code class="lang-bash" data-trim data-noescape>
+              $ python setup.py develop
+              </code></pre>
+            </li>
+            <li>
+              Until <a href="https://pip.pypa.io/en/stable/news/#v21-3">pip 21.3 (releaserd on 2021-10-11)</a>:
+              <pre><code class="lang-bash" data-trim data-noescape>
+              $ python -m pip install -e project
+              # under the hood calls - python setup.py develop
+              </code></pre>
+            </li>
+          </ul>
+        </section>
+
+        <section>
+          <h2>Prior art - Normal installation</h2>
+
+          <pre><code class="lang-bash" data-trim data-noescape>
+           .
+          ├──  pyproject.toml
+          └──  src
+              └──  demo
+                └──  __init__.py
+          </code></pre>
+          <pre><code class="lang-bash" data-trim data-noescape>
+          $ venv/bin/pip install .
+          Processing /tmp/prj
+            Installing build dependencies ... done
+            Getting requirements to build wheel ... done
+            Preparing metadata (pyproject.toml) ... done
+          Building <mark>wheels</mark> for collected packages: demo
+            Building wheel for demo (pyproject.toml) ... done
+            <mark>Created wheel for demo: filename=demo-1.0-py2.py3-none-any.whl size=1089 sha256=4af9f4008bef1f029f9ae06fdd752a1e36c</mark>
+            Stored in directory: /tmp/pip-ephem-wheel-cache-1t02m0nm/wheels/41/8a/ba/ffb94b3ccf1b5c11339bf57ad6563
+          Successfully built demo
+          Installing collected packages: demo
+          Successfully installed demo-1.0
+          </code></pre>
+
+          <pre class="fragment"><code class="lang-bash" data-trim data-noescape>
+
+          $ zipinfo -1 demo-1.0-py2.py3-none-any.whl
+          <mark>demo/__init__.py</mark>
+          demo-1.0.dist-info/METADATA
+          demo-1.0.dist-info/WHEEL
+          demo-1.0.dist-info/entry_points.txt
+          demo-1.0.dist-info/RECORD
+          </code></pre>
+        </section>
+
+        <section>
+          <h2>Prior art - Normal installation</h2>
+
+          <pre><code class="lang-bash" data-trim data-noescape>
+           .
+          ├──  pyproject.toml
+          └──  src
+              └──  demo
+                └──  __init__.py
+          </code></pre>
+          <pre><code class="lang-bash" data-trim data-noescape>
+          $ venv/bin/pip install .
+          Processing /tmp/prj
+            Installing build dependencies ... done
+            Getting requirements to build wheel ... done
+            Preparing metadata (pyproject.toml) ... done
+          Building <mark>wheels</mark> for collected packages: demo
+            Building wheel for demo (pyproject.toml) ... done
+            <mark>Created wheel for demo: filename=demo-1.0-py2.py3-none-any.whl size=1089 sha256=4af9f4008bef1f029f9ae06fdd752a1e36c</mark>
+            Stored in directory: /tmp/pip-ephem-wheel-cache-1t02m0nm/wheels/41/8a/ba/ffb94b3ccf1b5c11339bf57ad6563
+          Successfully built demo
+          Installing collected packages: demo
+          Successfully installed demo-1.0
+          </code></pre>
+
+          <pre><code class="lang-bash" data-trim data-noescape>
+
+          $ zipinfo -1 demo-1.0-py2.py3-none-any.whl
+          demo/__init__.py
+          <mark>demo-1.0.dist-info/METADATA
+          demo-1.0.dist-info/WHEEL
+          demo-1.0.dist-info/entry_points.txt
+          demo-1.0.dist-info/RECORD</mark>
+          </code></pre>
+        </section>
+        <section>
+          <h2>Prior art - Normal installation</h2>
+          <pre><code class="lang-bash" data-trim data-noescape>
+            $ venv/bin/pip install .
+            Processing /tmp/prj
+              Installing build dependencies ... done
+              Getting requirements to build wheel ... done
+              Preparing metadata (pyproject.toml) ... done
+            Building wheels for collected packages: demo
+              Building wheel for demo (pyproject.toml) ... done
+              Created wheel for demo: filename=demo-1.0-py2.py3-none-any.whl size=1089 sha256=4af9f4008bef1f029f9ae06fdd752a1e36c
+              Stored in directory: /tmp/pip-ephem-wheel-cache-1t02m0nm/wheels/41/8a/ba/ffb94b3ccf1b5c11339bf57ad6563
+            Successfully built demo
+            <mark>Installing collected packages: demo</mark>
+            Successfully installed demo-1.0
+
+            </code></pre>
+
+          <pre><code class="lang-bash" data-trim data-noescape>
+
+              $ zipinfo -1 demo-1.0-py2.py3-none-any.whl
+              demo/__init__.py
+              demo-1.0.dist-info/METADATA
+              demo-1.0.dist-info/WHEEL
+              demo-1.0.dist-info/entry_points.txt
+              demo-1.0.dist-info/RECORD
+              </code></pre>
+
+          <pre class="fragment"><code class="lang-bash" data-trim data-noescape>
+
+            $ lsd --tree venv/lib/python3.10/site-packages/demo*
+             demo
+            ├──  __init__.py
+            └──  __pycache__
+              └──  __init__.cpython-310.pyc
+             demo-1.0.dist-info
+            ├──  direct_url.json
+            ├──  entry_points.txt
+            ├──  INSTALLER
+            ├──  METADATA
+            ├──  RECORD
+            ├──  REQUESTED
+            └──  WHEEL
+            </code></pre>
+        </section>
+
+        <section>
+          <h2>Prior art - Normal installation</h2>
+          <pre><code class="lang-bash" data-trim data-noescape>
+            $ venv/bin/pip install .
+            Processing /tmp/prj
+              Installing build dependencies ... done
+              Getting requirements to build wheel ... done
+              Preparing metadata (pyproject.toml) ... done
+            Building wheels for collected packages: demo
+              Building wheel for demo (pyproject.toml) ... done
+              Created wheel for demo: filename=demo-1.0-py2.py3-none-any.whl size=1089 sha256=4af9f4008bef1f029f9ae06fdd752a1e36c
+              Stored in directory: /tmp/pip-ephem-wheel-cache-1t02m0nm/wheels/41/8a/ba/ffb94b3ccf1b5c11339bf57ad6563
+            Successfully built demo
+            <mark>Installing collected packages: demo</mark>
+            Successfully installed demo-1.0
+
+            </code></pre>
+
+          <pre><code class="lang-bash" data-trim data-noescape>
+
+              $ zipinfo -1 demo-1.0-py2.py3-none-any.whl
+              <mark>demo/__init__.py</mark>
+              demo-1.0.dist-info/METADATA
+              demo-1.0.dist-info/WHEEL
+              demo-1.0.dist-info/entry_points.txt
+              demo-1.0.dist-info/RECORD
+              </code></pre>
+
+          <pre><code class="lang-bash" data-trim data-noescape>
+
+          $ lsd --tree venv/lib/python3.10/site-packages/demo*
+          <mark> demo
+            ├──  __init__.py
+            └──  __pycache__
+              └──  __init__.cpython-310.pyc</mark>
+           demo-1.0.dist-info
+          ├──  direct_url.json
+          ├──  entry_points.txt
+          ├──  INSTALLER
+          ├──  METADATA
+          ├──  RECORD
+          ├──  REQUESTED
+          └──  WHEEL
+            </code></pre>
+        </section>
+
+        <section>
+          <h2>Prior art - Normal installation</h2>
+          <pre><code class="lang-bash" data-trim data-noescape>
+            $ venv/bin/pip install .
+            Processing /tmp/prj
+              Installing build dependencies ... done
+              Getting requirements to build wheel ... done
+              Preparing metadata (pyproject.toml) ... done
+            Building wheels for collected packages: demo
+              Building wheel for demo (pyproject.toml) ... done
+              Created wheel for demo: filename=demo-1.0-py2.py3-none-any.whl size=1089 sha256=4af9f4008bef1f029f9ae06fdd752a1e36c
+              Stored in directory: /tmp/pip-ephem-wheel-cache-1t02m0nm/wheels/41/8a/ba/ffb94b3ccf1b5c11339bf57ad6563
+            Successfully built demo
+            <mark>Installing collected packages: demo</mark>
+            Successfully installed demo-1.0
+
+            </code></pre>
+
+          <pre><code class="lang-bash" data-trim data-noescape>
+
+              $ zipinfo -1 demo-1.0-py2.py3-none-any.whl
+              demo/__init__.py
+              <mark>demo-1.0.dist-info/METADATA
+              demo-1.0.dist-info/WHEEL
+              demo-1.0.dist-info/entry_points.txt
+              demo-1.0.dist-info/RECORD</mark>
+              </code></pre>
+
+          <pre><code class="lang-bash" data-trim data-noescape>
+
+            $ lsd --tree venv/lib/python3.10/site-packages/demo*
+             demo
+            ├──  __init__.py
+            └──  __pycache__
+              └──  __init__.cpython-310.pyc
+            <mark> demo-1.0.dist-info
+            ├──  direct_url.json
+            ├──  entry_points.txt
+            ├──  INSTALLER
+            ├──  METADATA
+            ├──  RECORD
+            ├──  REQUESTED
+            └──  WHEEL</mark>
+            </code></pre>
+        </section>
+
+        <section>
+          <h2>Prior art - Editable installation</h2>
+          <pre><code class="lang-bash" data-trim data-noescape>
+             .
+            ├──  setup.py
+            └──  src
+              └──  demo
+                  └──  __init__.py
+            </code></pre>
+          <br />
+
+          <pre><code class="lang-python" data-trim data-noescape>
+          from setuptools import setup
+
+          setup(
+              name="demo",
+              version="1.0",
+              package_dir={"": "src"},
+              packages=["demo"],
+          )
+           </code></pre>
+
+          <br />
+
+          <pre><code class="lang-bash" data-trim data-noescape>
+           $ virtualenv venv --clear --no-wheel --pip 21.2 --activators ""
+           created virtual environment CPython3.10.4.final.0-64 in 101ms
+           added seed packages: pip==21.2, setuptools==62.1.0
+          </code></pre>
+          <br />
+          <pre><code class="lang-bash" data-trim data-noescape>
+           $ venv/bin/pip install -e .
+           Obtaining file:///home/bernat/git/pep-660-662-2022/prj
+           Installing collected packages: demo
+             <mark>Running setup.py develop for demo</mark>
+           Successfully installed demo-1.0
+           </code></pre>
+        </section>
+
+        <section>
+          <h2>Prior art - Editable installation</h2>
+          <pre><code class="lang-bash" data-trim data-noescape>
+             .
+            ├──  setup.py
+            └──  src
+              ├──  demo
+              │  └──  __init__.py
+              <mark>└──  demo.egg-info
+                  ├──  dependency_links.txt
+                  ├──  PKG-INFO
+                  ├──  SOURCES.txt
+                  └──  top_level.txt</mark>
+            </code></pre>
+
+          <br />
+
+          <pre><code class="lang-bash" data-trim data-noescape>
+            $ cat venv/lib/python3.10/site-packages/easy-install.pth
+            /tmp/prj/src
+            </code></pre>
+          <br />
+          <pre><code class="lang-bash" data-trim data-noescape>
+          $ venv/bin/python -m site
+          sys.path = [
+              '/tmp/prj',
+              '/usr/lib/python310.zip',
+              '/usr/lib/python3.10',
+              '/usr/lib/python3.10/lib-dynload',
+              '/tmp/prj/venv/lib/python3.10/site-packages',
+              <mark>'/tmp/prj/src',</mark>
+          ]
+          USER_BASE: '/home/bernat/.local' (exists)
+          USER_SITE: '/home/bernat/.local/lib/python3.10/site-packages' (exists)
+          ENABLE_USER_SITE: False
+          </code></pre>
+        </section>
+
+        <section>
+          <h1>Drawback of the priort art</h1>
         </section>
 
         <section>
           <h1>New approaches</h1>
+          <!-- prettier-ignore -->
+          <div class="mermaid">
+            graph TD 
+              S[Source directory]              
+          </div>
         </section>
 
         <section>
@@ -281,6 +792,7 @@
           },
         ],
       });
+      mermaid.initialize({ startOnLoad: true });
     </script>
   </body>
 </html>

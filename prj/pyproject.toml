@@ -1,0 +1,7 @@
+[build-system]
+build-backend = "hatchling.build"
+requires = ["hatchling>=0.14"]
+
+[project]
+name = "demo"
+version = "1.0"
