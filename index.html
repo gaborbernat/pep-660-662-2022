@@ -1014,18 +1014,172 @@
 
         <section>
           <h2>Import hooks</h2>
+          <ul>
+            <li>We're importing modules, not files, let's use that!</li>
+            <li>Extend the import system to manifest the module at import time</li>
+            <li>Fully dynamic (load packaging config at first import, and validate config/file system)!</li>
+            <li>
+              Brainstormed together with Paul Moore in 2020 - he released it as the
+              <a href="https://pypi.org/project/editables">editables</a> library
+            </li>
+          </ul>
         </section>
 
         <section>
-          <h1>The Python Packaging build system</h1>
+          <h2>Import hooks</h2>
+          <ul>
+            <li>
+              Generates a PTH file that handles system initialization
+              <pre><code class="lang-bash" data-trim data-noescape>
+              .rw-r--r--  venv/lib/python3.10/site-packages/demo.pth
+              .rw-r--r--  venv/lib/python3.10/site-packages/_editable_impl_demo.py
+              </code></pre>
+            </li>
+            <li>
+              Just load the import logic
+              <pre><code class="lang-python" data-trim data-noescape>
+              import _editable_impl_pyproject_fmt
+              </code></pre>
+            </li>
+            <li>
+              Register the editable import hook and define how modules map to source files
+              <pre><code class="lang-python" data-trim data-noescape>
+              from editables.redirector import RedirectingFinder as F
+              F.install()  # install import editables import hook to sys.meta_path
+              F.map_module('demo', '/tmp/prj/src/demo/__init__.py')   # register module name to source file
+              </code></pre>
+            </li>
+            <li class="fragment">
+              Solves (all) our problems, as supports:
+              <ul>
+                <li>
+                  <span style="font-style: italic">addition</span> of new files as would check during import if exists
+                </li>
+                <li>
+                  <span style="font-style: italic">exclusion</span> of files as could check during the import if
+                  excluded and skip
+                </li>
+                <li><span style="font-style: italic">generate code</span> from JSONSpec/OpenAPI during the import</li>
+                <li>
+                  <span style="font-style: italic">recompile/build</span> C-extension modules on import if the source
+                  file has been updated since last build
+                </li>
+              </ul>
+            </li>
+          </ul>
+
+          <br />
+
+          <br />
+        </section>
+
+        <section>
+          <h1>The Python build system</h1>
+        </section>
+
+        <section>
+          <h2>The Python build system</h2>
+          <ul>
+            <pre><code class="lang-bash" data-trim data-noescape>
+            pip wheel -w --no-deps /tmp/prj
+            pyproject-build -w .
+            </code></pre>
+            In order to build a wheel two distinct components work together:
+            <li class="fragment">
+              build backend (<a href="https://pypi.org/project/setuptools">setuptools</a>,
+              <a href="https://pypi.org/project/hatchling">hatchling</a>,
+              <a href="https://pypi.org/project/flit">flit</a>, <a href="https://pypi.org/project/poetry">poetry</a>)
+              <br />
+              load project configuration and build the wheel file
+            </li>
+            <li class="fragment">
+              build frontend (<a href="https://pypi.org/project/pip">pip</a>,
+              <a href="https://pypi.org/project/build">build</a>)
+              <ul>
+                <li>creates an isolated build environment</li>
+                <li class="fragment">
+                  installs the build dependencies as specified by the requires key in
+                  <span style="font-style: italic">pyproject.toml</span>
+                  <pre><code class="lang-toml" data-trim data-noescape>
+                  [build-system]
+                  build-backend = "hatchling.build"
+                  requires = ["hatchling>=0.14"]
+                  </code></pre>
+                </li>
+                <li class="fragment">
+                  call the build backend via the interface defined in
+                  <a href="https://peps.python.org/pep-0517/">PEP-517</a>
+                  <ul>
+                    <li class="fragment">
+                      get runtime build dependencies and install them
+                      <pre><code class="lang-python" data-trim data-noescape>
+                      def get_requires_for_build_wheel(config_settings=None):
+                          return ["wheel"]
+                      </code></pre>
+                    </li>
+                    <li class="fragment">
+                      perform the wheel build
+                      <pre><code class="lang-python" data-trim data-noescape>
+                      def build_wheel(wheel_directory, config_settings=None, metadata_directory=None):
+                          ...  # e.g. for setuptools call python setup.py bdist_wheel
+                      </code></pre>
+                    </li>
+                  </ul>
+                </li>
+              </ul>
+            </li>
+          </ul>
+        </section>
+
+        <section>
+          <h2>The Python build system</h2>
+          <pre><code class="lang-bash" data-trim data-noescape>
+          $ pyproject-build -w /tmp/virtualenv
+          * Creating venv isolated environment...
+          * Installing packages in isolated environment... (setuptools >= 62.1.0, setuptools-scm >= 6.4)
+          * Getting dependencies for wheel...
+          * Installing packages in isolated environment... (wheel >= 0.37.1)
+          * Building wheel...
+          running bdist_wheel
+          running build
+          running build_py
+          ...
+          Successfully built virtualenv-20.14.1-py2.py3-none-any.whl
+          </code></pre>
         </section>
 
         <section>
           <h1>The new solution</h1>
+          <h5>
+            Time to write a <span style="color: red">P</span>ython <span style="color: red">E</span>nhancement
+            <span style="color: red">P</span>roposal
+          </h5>
         </section>
 
         <section>
           <h2>Two proposals</h2>
+          <ul>
+            <li>We could agree on what editable builds are</li>
+            <li>
+              We struggled to agree on:
+              <ul>
+                <li>How much of the complex problems we should solve?</li>
+                <li>Should the build backend or the build frontend do the heavy lifting?</li>
+              </ul>
+            </li>
+            <li class="fragment">
+              In the end we created two proposals:
+              <ul>
+                <li>
+                  Backend does most of it -
+                  <a href="https://peps.python.org/pep-0660">PEP-660 - traditional wheel based</a>
+                </li>
+                <li>
+                  Frontend does most of it - <a href="https://peps.python.org/pep-0663">PEP-662 - virtual wheels</a>
+                </li>
+              </ul>
+            </li>
+          </ul>
         </section>
 
         <section>
