@@ -585,6 +585,18 @@
             ├──  REQUESTED
             └──  WHEEL</mark>
             </code></pre>
+
+          <!-- prettier-ignore -->
+          <div class="mermaid">
+            graph LR
+              S[Source directory]
+              W[Built wheel]
+              SP[site-packages]
+              P[Python executable]
+              S -->|copy| W
+              W -->|extract - copy| SP
+              SP -.-|import demo| P
+          </div>
         </section>
 
         <section>
@@ -662,6 +674,14 @@
           USER_SITE: '/home/bernat/.local/lib/python3.10/site-packages' (exists)
           ENABLE_USER_SITE: False
           </code></pre>
+          <!-- prettier-ignore -->
+          <div class="mermaid">
+            graph LR
+              S[Source directory]
+              P[Python executable]
+              S -.-|import demo| P
+              S -->|build metadata and install pth file to resolve imports| S
+          </div>
         </section>
 
         <section>
@@ -700,6 +720,65 @@
           USER_SITE: '/home/bernat/.local/lib/python3.10/site-packages' (exists)
           ENABLE_USER_SITE: False
           </code></pre>
+
+          <!-- prettier-ignore -->
+          <div class="mermaid">
+            graph LR
+              S[Source directory]
+              P[Python executable]
+              S -.-|import demo| P
+              S -->|build metadata and install pth file to resolve imports| S
+          </div>
+        </section>
+
+        <section>
+          <h2>Is this problems solved?</h2>
+          <ul>
+            <li>
+              No, because the solution still requires the presence of the legacy
+              <span style="font-style: italic">setup.py</span> file
+            </li>
+            <li>What is an editable installation and how it should work was never agreed upon</li>
+            <li>Prior art is an implementation detail of a tool</li>
+            <li class="fragment">
+              Why did we not do it before? <span class="fragment">we did try!</span
+              ><span class="fragment"> (more than once)</span>
+              <ul>
+                <li class="fragment">
+                  2015 -
+                  <a href="https://peps.python.org/pep-0517/#get-requires-for-build-sdist"
+                    >part of PEP-517 (standardization of the normal builds)</a
+                  >
+                </li>
+                <li class="fragment">
+                  2019 April -
+                  <a href="https://discuss.python.org/t/pip-freeze-vcs-urls-and-pep-517-feat-editable-installs/1473"
+                    >part of the PyCon US 2019 packaging summit</a
+                  >
+                </li>
+                <li class="fragment">
+                  2019 May -
+                  <a href="https://discuss.python.org/t/specification-of-editable-installation/1564">
+                    follow-up discussion to the decision at the summit</a
+                  >
+                </li>
+                <li class="fragment">
+                  2020 April -
+                  <a href="https://discuss.python.org/t/third-try-on-editable-installs/3986">
+                    third try on editable installs</a
+                  >
+                </li>
+                <li class="fragment">
+                  2021 April -
+                  <a href="https://peps.python.org/pep-0660/"> Editable installs for pyproject.toml based builds</a>
+                </li>
+                <li class="fragment">
+                  2021 May -
+                  <a href="https://peps.python.org/pep-0662/">Editable installs via virtual wheels</a>
+                </li>
+              </ul>
+            </li>
+          </ul>
         </section>
 
         <section>
@@ -861,11 +940,80 @@
 
         <section>
           <h1>New approaches</h1>
-          <!-- prettier-ignore -->
-          <div class="mermaid">
-            graph TD 
-              S[Source directory]              
-          </div>
+        </section>
+
+        <section>
+          <h2>Life without a PTH file?</h2>
+          <img data-src="img/pth.png" />
+        </section>
+
+        <section>
+          <h2>Symlinks - Folder</h2>
+          <ul>
+            <li>Available on UNIX, Windows 7+ supports it (with a potential one time setup)</li>
+            <li class="fragment">
+              Symlink at build time each file from within the source directory to site-packages
+              <pre><code class="lang-bash" data-trim data-noescape>
+                $ lsd -tree /tmp/prj
+                 . 
+                ├──  pyproject.toml
+                └──  src
+                    └──  demo
+                      └──  __init__.py
+                </code></pre>
+              <br />
+
+              <pre><code class="lang-bash" data-trim data-noescape>
+              $ lsd -alth venv/lib/python3.10/site-packages/demo
+              drwxr-xr-x bernat bernat 131 B  Sun Apr 17 17:30:12 2022  .
+              lrwxrwxrwx bernat bernat  46 B  Sun Apr 17 17:30:12 2022  demo ⇒ /tmp/prj/src/demo
+              </code></pre>
+
+              <ul>
+                <ul>
+                  <li>No startup performance impact</li>
+                  <li>File paths mirror normal installation</li>
+                  <li>New files added are automatically included but does not allow exclusion</li>
+                </ul>
+              </ul>
+            </li>
+          </ul>
+        </section>
+
+        <section>
+          <h2>Symlinks - Files</h2>
+          <ul>
+            <li>
+              Symlink at build time each file from within the source directory to site-packages
+              <pre><code class="lang-bash" data-trim data-noescape>
+                $ lsd -tree /tmp/prj
+                 . 
+                ├──  pyproject.toml
+                └──  src
+                    │──  demo
+                    │  └──  __init__.py
+                    └──  test_demo.py
+                </code></pre>
+              <br />
+              <pre><code class="lang-bash" data-trim data-noescape>
+                $ lsd -alth venv/lib/python3.10/site-packages/demo
+                drwxr-xr-x bernat bernat  25 B Sun Apr 17 17:36:40 2022  .
+                lrwxrwxrwx bernat bernat  58 B Sun Apr 17 17:36:14 2022  __init__.py ⇒ /tmp/prj/src/demo/__init__.py
+                </code></pre>
+
+              <ul>
+                <ul>
+                  <li>No startup performance impact</li>
+                  <li>File paths mirror normal installation</li>
+                  <li>Allows file level inclusion/exclusion but new files require reinstall</li>
+                </ul>
+              </ul>
+            </li>
+          </ul>
+        </section>
+
+        <section>
+          <h2>Import hooks</h2>
         </section>
 
         <section>
