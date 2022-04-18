@@ -1149,6 +1149,91 @@
         </section>
 
         <section>
+          <h2>The Python build system</h2>
+          <pre><code class="lang-bash" data-trim data-noescape>
+          $ pyproject-build -w /tmp/virtualenv
+          <mark>* Creating venv isolated environment...</mark>
+          * Installing packages in isolated environment... (setuptools >= 62.1.0, setuptools-scm >= 6.4)
+          * Getting dependencies for wheel...
+          * Installing packages in isolated environment... (wheel >= 0.37.1)
+          * Building wheel...
+          running bdist_wheel
+          running build
+          running build_py
+          ...
+          Successfully built virtualenv-20.14.1-py2.py3-none-any.whl
+          </code></pre>
+        </section>
+
+        <section>
+          <h2>The Python build system</h2>
+          <pre><code class="lang-bash" data-trim data-noescape>
+          $ pyproject-build -w /tmp/virtualenv
+          * Creating venv isolated environment...
+          <mark>* Installing packages in isolated environment... (setuptools >= 62.1.0, setuptools-scm >= 6.4)</mark>
+          * Getting dependencies for wheel...
+          * Installing packages in isolated environment... (wheel >= 0.37.1)
+          * Building wheel...
+          running bdist_wheel
+          running build
+          running build_py
+          ...
+          Successfully built virtualenv-20.14.1-py2.py3-none-any.whl
+          </code></pre>
+        </section>
+
+        <section>
+          <h2>The Python build system</h2>
+          <pre><code class="lang-bash" data-trim data-noescape>
+          $ pyproject-build -w /tmp/virtualenv
+          * Creating venv isolated environment...
+          * Installing packages in isolated environment... (setuptools >= 62.1.0, setuptools-scm >= 6.4)
+          <mark>* Getting dependencies for wheel...</mark>
+          * Installing packages in isolated environment... (wheel >= 0.37.1)
+          * Building wheel...
+          running bdist_wheel
+          running build
+          running build_py
+          ...
+          Successfully built virtualenv-20.14.1-py2.py3-none-any.whl
+          </code></pre>
+        </section>
+
+        <section>
+          <h2>The Python build system</h2>
+          <pre><code class="lang-bash" data-trim data-noescape>
+          $ pyproject-build -w /tmp/virtualenv
+          * Creating venv isolated environment...
+          * Installing packages in isolated environment... (setuptools >= 62.1.0, setuptools-scm >= 6.4)
+          * Getting dependencies for wheel...
+          <mark>* Installing packages in isolated environment... (wheel >= 0.37.1)</mark>
+          * Building wheel...
+          running bdist_wheel
+          running build
+          running build_py
+          ...
+          Successfully built virtualenv-20.14.1-py2.py3-none-any.whl
+          </code></pre>
+        </section>
+
+        <section>
+          <h2>The Python build system</h2>
+          <pre><code class="lang-bash" data-trim data-noescape>
+          $ pyproject-build -w /tmp/virtualenv
+          * Creating venv isolated environment...
+          * Installing packages in isolated environment... (setuptools >= 62.1.0, setuptools-scm >= 6.4)
+          * Getting dependencies for wheel...
+          * Installing packages in isolated environment... (wheel >= 0.37.1)
+          <mark>* Building wheel...
+          running bdist_wheel
+          running build
+          running build_py
+          ...</mark>
+          Successfully built virtualenv-20.14.1-py2.py3-none-any.whl
+          </code></pre>
+        </section>
+
+        <section>
           <h1>The new solution</h1>
           <h5>
             Time to write a <span style="color: red">P</span>ython <span style="color: red">E</span>nhancement
@@ -1184,26 +1269,215 @@
 
         <section>
           <h2>PEP-660 – Editable installs for pyproject.toml based builds (wheel based)</h2>
+
+          <ul>
+            Extends the API between the build backend and frontend to build editable wheels:
+            <li>
+              Introduce an editable wheel build environment
+              <pre><code class="lang-python" data-trim data-noescape>
+                def get_requires_for_build_editable(config_settings=None):
+                  ...
+              </code></pre>
+            </li>
+            <li>
+              Add an endpoint that can provide the editable wheels metadata without building it
+              <pre><code class="lang-python" data-trim data-noescape>
+              def prepare_metadata_for_build_editable(metadata_directory, config_settings=None):
+                  ...
+            </code></pre>
+            </li>
+            <li>
+              Add an endpoint that builds the editable wheel
+              <pre><code class="lang-python" data-trim data-noescape>
+              def build_editable(wheel_directory, config_settings=None, metadata_directory=None):
+                ...
+              </code></pre>
+            </li>
+            <li>
+              Mandate the frontend to create <span style="font-style: italic">direct_url.json</span> in the
+              <span style="font-style: italic">.dist-info</span> folder
+            </li>
+          </ul>
+        </section>
+
+        <section>
+          <h2>PEP-660 – Editable installs for pyproject.toml based builds (wheel based)</h2>
+
+          <ol>
+            An editable instllation is made up of:
+            <li>Build frontend creates an isolated build environment</li>
+            <li class="fragment">
+              Build frontend installs <span style="font-style: italic">build-system.requires</span> from
+              <span style="font-style: italic">pyproject.toml</span>
+            </li>
+            <li class="fragment">
+              The frontend asks the backend for dependencies needed to build an editable wheel
+              <pre><code class="lang-python" data-trim data-noescape>
+                def get_requires_for_build_editable(config_settings=None):
+                  ...
+              </code></pre>
+            </li>
+            <li class="fragment">Frontend installs additional dependencies</li>
+            <li class="fragment">
+              Frontend asks the backend to build the editable wheel
+              <pre><code class="lang-python" data-trim data-noescape>
+              def build_editable(wheel_directory, config_settings=None, metadata_directory=None):
+                ...
+              </code></pre>
+            </li>
+            <li class="fragment">Wheel installed into test environment via an installer per existing standards</li>
+            <li class="fragment">Frontend creates <span style="font-style: italic">direct_url.json</span></li>
+          </ol>
+        </section>
+
+        <section>
+          <h2>PEP-660 – Editable installs for pyproject.toml based builds (wheel based)</h2>
+
+          <ul>
+            <li class="fragment">
+              The editable effect is handled by the build backend via the files it puts in the wheel
+              <ul>
+                <li>PTH</li>
+                <li>import hook</li>
+              </ul>
+            </li>
+            <li class="fragment">Backend may expose multiple ways, select via config_settings arg of build_editable</li>
+            <li class="fragment">
+              Backends can reuse/delegate editable logic via libraries (e.g.
+              <span style="font-style: italic">editables</span>)
+            </li>
+            <li class="fragment">
+              Symlinks are not supported as of today
+              <ul>
+                <li>interested parties are invited to submit a PEP to extend the wheel standard</li>
+              </ul>
+            </li>
+            <li class="fragment">No change for uninstallers - reusing the wheel standard takes care of it</li>
+          </ul>
         </section>
 
         <section>
           <h2>PEP-662 – Editable installs via virtual wheels</h2>
+          <ul>
+            <li>Interface extension between build backend and frontend is same as PEP-660</li>
+            <li class="fragment">
+              Similar build process, but the produced wheel artifact must contain at root
+              <span style="font-style: italic">editables.json</span>
+              <pre><code class="lang-json" data-trim data-noescape>
+              {
+                  "version": 1,
+                  "scheme": {
+                     "purelib": {"/src/tree/a.py": "tree/a.py"},
+                     "platlib": {},
+                     "data": {"/src/tree/py.typed": "tree/py.typed"},
+                     "headers": {},
+                     "scripts": {}
+                  }
+               }
+              </code></pre>
+            </li>
+            <li class="fragment">The JSON file tells the frontend what files need to be mapped and where</li>
+            <li class="fragment">
+              It's up to the frotnend how it makes it happen, and should allow user to select:
+              <pre><code class="lang-json" data-trim data-noescape>
+                pip install -e /prj --mode=symlink|pth|hook
+                </code></pre>
+
+              <ul>
+                <li>Symlinks</li>
+                <li>PTH</li>
+                <li>sitecustomize.py</li>
+                <li>import hooks</li>
+              </ul>
+            </li>
+          </ul>
         </section>
 
         <section>
           <h2>Choosing a winner</h2>
+          <ul>
+            <li>
+              Paul Moore is the BDFL for packaging PEPs <br />
+              <img data-src="img/paul.png" style="margin-bottom: 0; border-bottom: 0" />
+            </li>
+            <li>2 weeks cooldown period</li>
+            <li>
+              <a href="https://discuss.python.org/t/pronouncement-on-peps-660-and-662-editable-installs/9450"
+                >PEP-660 announced as winner</a
+              >
+              on June 2021
+            </li>
+            <li>Primary reason given was that PEP-662 left the frontends tasks too open</li>
+          </ul>
         </section>
 
         <section>
           <h1>Lessons learned</h1>
+
+          <ul>
+            Quick adoption by the community
+            <li>
+              Build frontends support
+              <ul>
+                <li>
+                  <a href="https://pip.pypa.io/en/stable/news/#v21-3"
+                    >pip support since version 21.3 (released on 2021-10-11)</a
+                  >
+                </li>
+              </ul>
+            </li>
+            <li>
+              Build backend support
+              <ul>
+                <li>pdm since 0.8 - 2021 June</li>
+                <li>enscons since 0.26 - 2021 August</li>
+                <li>flit since 3.4 - 2021 October</li>
+                <li>hatchling since 0.3 - 2021 December</li>
+                <li>poetry since 1.1 - 2022 March</li>
+                <li class="fragment">
+                  <a href="https://discuss.python.org/t/implementing-pep-660-for-setuptools/9193"
+                    >setuptools adoption stalled</a
+                  >
+                  😔 due to tech debt and not wanting a 1:1 migration
+                </li>
+              </ul>
+            </li>
+          </ul>
+        </section>
+
+        <section>
+          <h1>Lessons learned</h1>
+
+          <img
+            alt="Silky"
+            src="./img/black_swan.jpg"
+            style="width: 60%; margin-left: auto; margin-right: auto; margin-bottom: 0"
+          />
+          <p style="font-size: 12px; margin: 0 0">
+            <a href="https://commons.wikimedia.org/wiki/File:Black_Swan_2_-_Pitt_Town_Lagoon.jpg"
+              >Creative Commons Attribution-Share Alike 4.0 International</a
+            >
+          </p>
+          <ul>
+            <li class="fragment">
+              IDE and static checkers cannot support the dynamic aspect of import hooks
+              <ul>
+                <li>
+                  <a href="https://discuss.python.org/t/pep-660-support-and-ides/13878/6"
+                    >would require some static paths</a
+                  >
+                  - <span style="font-style: italic">editables.json</span>
+                </li>
+              </ul>
+            </li>
+          </ul>
         </section>
 
         <section>
           <h1>Questions?</h1>
 
           <ul>
-            <li>Ask now (limited availability)</li>
-            <li>Find me after at the conference!</li>
+            <li class="fragment">Find me after at the conference!</li>
           </ul>
         </section>
 
