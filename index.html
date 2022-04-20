@@ -19,6 +19,7 @@
         margin-top: 0;
         margin-bottom: 0;
         box-shadow: none;
+        font-size: 0.5em;
       }
 
       .reveal code,
@@ -80,7 +81,7 @@
               <img
                 alt="Silky"
                 src="./img/silky_junior.jpg"
-                style="width: 60%; margin-left: auto; margin-right: auto; margin-bottom: 0"
+                style="width: 50%; margin-left: auto; margin-right: auto; margin-bottom: 0"
               />
               <p style="font-size: 12px; margin: 0 0">Copyright of the above image owned by Bernat Gabor</p>
             </div>
@@ -150,6 +151,17 @@
 
         <section>
           <h1>What is an editable installation?</h1>
+        </section>
+
+        <section>
+          <div>
+            <img
+              alt="Eager"
+              src="./img/junior_ball.jpg"
+              style="width: 50%; margin-left: auto; margin-right: auto; margin-bottom: 0"
+            />
+            <p style="font-size: 12px; margin: 0 0">Copyright of the above image owned by Bernat Gabor</p>
+          </div>
         </section>
 
         <section>
@@ -355,6 +367,14 @@
 
         <section>
           <h1>Prior art</h1>
+          <div>
+            <img
+              alt="Curios"
+              src="./img/silky_hill.jpg"
+              style="width: 75%; margin-left: auto; margin-right: auto; margin-bottom: 0"
+            />
+            <p style="font-size: 12px; margin: 0 0">Copyright of the above image owned by Bernat Gabor</p>
+          </div>
         </section>
 
         <section>
@@ -783,6 +803,14 @@
 
         <section>
           <h1>Drawbacks of the prior art</h1>
+          <div>
+            <img
+              alt="Not all sunshine"
+              src="./img/silky_sun.jpg"
+              style="width: 50%; margin-left: auto; margin-right: auto; margin-bottom: 0"
+            />
+            <p style="font-size: 12px; margin: 0 0">Copyright of the above image owned by Bernat Gabor</p>
+          </div>
         </section>
 
         <section>
@@ -940,6 +968,14 @@
 
         <section>
           <h1>New approaches</h1>
+          <div>
+            <img
+              alt="Eager"
+              src="./img/junior_coming.jpg"
+              style="width: 40%; margin-left: auto; margin-right: auto; margin-bottom: 0"
+            />
+            <p style="font-size: 12px; margin: 0 0">Copyright of the above image owned by Bernat Gabor</p>
+          </div>
         </section>
 
         <section>
@@ -1075,12 +1111,20 @@
 
         <section>
           <h1>The Python build system</h1>
+          <div>
+            <img
+              alt="Lot of info"
+              src="./img/junior_sleeping.jpg"
+              style="width: 48%; margin-left: auto; margin-right: auto; margin-bottom: 0"
+            />
+            <p style="font-size: 12px; margin: 0 0">Copyright of the above image owned by Bernat Gabor</p>
+          </div>
         </section>
 
         <section>
           <h2>The Python build system</h2>
           <ul>
-            <pre><code class="lang-bash" data-trim data-noescape>
+            <pre style="font-size: 0.44em"><code class="lang-bash" data-trim data-noescape>
             pip wheel -w --no-deps /tmp/prj
             pyproject-build -w .
             </code></pre>
@@ -1100,7 +1144,7 @@
                 <li class="fragment">
                   installs the build dependencies as specified by the requires key in
                   <span style="font-style: italic">pyproject.toml</span>
-                  <pre><code class="lang-toml" data-trim data-noescape>
+                  <pre style="font-size: 0.44em"><code class="lang-toml" data-trim data-noescape>
                   [build-system]
                   build-backend = "hatchling.build"
                   requires = ["hatchling>=0.14"]
@@ -1112,14 +1156,14 @@
                   <ul>
                     <li class="fragment">
                       get runtime build dependencies and install them
-                      <pre><code class="lang-python" data-trim data-noescape>
+                      <pre style="font-size: 0.44em"><code class="lang-python" data-trim data-noescape>
                       def get_requires_for_build_wheel(config_settings=None):
                           return ["wheel"]
                       </code></pre>
                     </li>
                     <li class="fragment">
                       perform the wheel build
-                      <pre><code class="lang-python" data-trim data-noescape>
+                      <pre style="font-size: 0.44em"><code class="lang-python" data-trim data-noescape>
                       def build_wheel(wheel_directory, config_settings=None, metadata_directory=None):
                           ...  # e.g. for setuptools call python setup.py bdist_wheel
                       </code></pre>
@@ -1239,6 +1283,14 @@
             Time to write a <span style="color: red">P</span>ython <span style="color: red">E</span>nhancement
             <span style="color: red">P</span>roposal
           </h5>
+          <div>
+            <img
+              alt="Eager"
+              src="./img/silky_junior_2.jpg"
+              style="width: 60%; margin-left: auto; margin-right: auto; margin-bottom: 0"
+            />
+            <p style="font-size: 12px; margin: 0 0">Copyright of the above image owned by Bernat Gabor</p>
+          </div>
         </section>
 
         <section>
@@ -1451,7 +1503,7 @@
           <img
             alt="Silky"
             src="./img/black_swan.jpg"
-            style="width: 60%; margin-left: auto; margin-right: auto; margin-bottom: 0"
+            style="width: 55%; margin-left: auto; margin-right: auto; margin-bottom: 0"
           />
           <p style="font-size: 12px; margin: 0 0">
             <a href="https://commons.wikimedia.org/wiki/File:Black_Swan_2_-_Pitt_Town_Lagoon.jpg"
@@ -1504,7 +1556,7 @@
       </div>
     </div>
 
-    <div style="position: absolute; bottom: 2px; right: 2px; width: 10em">
+    <div style="position: absolute; bottom: 2px; right: 2px; width: 10em; z-index: 1000">
       <p
         style="
           color: #767676;
