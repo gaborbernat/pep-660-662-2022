@@ -213,7 +213,7 @@
         <section>
           <h3>What is an editable installation?</h3>
           <ol>
-            To test the library we need to install it in an isolated virtual environment, for example:
+            To test the library, we need to install it in an isolated virtual environment. For example:
             <li class="fragment">
               create isolated virtual environment
               <pre><code class="lang-bash" data-trim data-noescape>
@@ -254,7 +254,7 @@
         <section>
           <h3>What is an editable installation?</h3>
           <ul>
-            What will happen when I change the library code inside the projects soure directory?
+            What will happen when I change the library code inside the projects source directory?
             <li>
               change <span style="font-style: italic">src/demo/__init__.py</span>
               <pre><code class="lang-python" data-trim data-noescape>
@@ -752,16 +752,16 @@
         </section>
 
         <section>
-          <h2>Is this problems solved?</h2>
+          <h2>Is this problem solved?</h2>
           <ul>
             <li>
               No, because the solution still requires the presence of the legacy
               <span style="font-style: italic">setup.py</span> file
             </li>
-            <li>What is an editable installation and how it should work was never agreed upon</li>
+            <li>What an editable installation is and how it should work was never agreed upon</li>
             <li>Prior art is an implementation detail of a tool</li>
             <li class="fragment">
-              Why did we not do it before? <span class="fragment">we did try!</span
+              Why did we not do it before? <span class="fragment">We did try!</span
               ><span class="fragment"> (more than once)</span>
               <ul>
                 <li class="fragment">
@@ -881,7 +881,7 @@
             </code></pre>
           <ul>
             <li>
-              editable installation will allow to run
+              editable installation will allow you to run
               <span style="font-style: italic; color: gray">import demo.tests</span>
             </li>
             <li>
@@ -909,7 +909,7 @@
               </code></pre>
             </li>
             <li>
-              for example PyDantic objects via
+              for example, PyDantic objects via
               <a href="https://pypi.org/project/datamodel-code-generator/">datamodel-code-generator</a>
               <pre><code class="lang-python" data-trim data-noescape>            
                 $ datamodel-codegen --input schema.json
@@ -986,9 +986,9 @@
         <section>
           <h2>Symlinks - Folder</h2>
           <ul>
-            <li>Available on UNIX, Windows 7+ supports it (with a potential one time setup)</li>
+            <li>Available on UNIX, Windows 7+ supports it (with a potential one-time setup)</li>
             <li class="fragment">
-              Symlink at build time each file from within the source directory to site-packages
+              Symlink each file from within the source directory to site-packages at build time
               <pre><code class="lang-bash" data-trim data-noescape>
                 $ lsd -tree /tmp/prj
                  . 
@@ -1020,7 +1020,7 @@
           <h2>Symlinks - Files</h2>
           <ul>
             <li>
-              Symlink at build time each file from within the source directory to site-packages
+              Symlink each file from within the source directory to site-packages at build time
               <pre><code class="lang-bash" data-trim data-noescape>
                 $ lsd -tree /tmp/prj
                  . 
@@ -1086,19 +1086,20 @@
               </code></pre>
             </li>
             <li class="fragment">
-              Solves (all) our problems, as supports:
+              Solves (all) our problems, it as supports:
               <ul>
                 <li>
-                  <span style="font-style: italic">addition</span> of new files as would check during import if exists
+                  <span style="font-style: italic">addition</span> of new files as it would check during import if
+                  exists
                 </li>
                 <li>
-                  <span style="font-style: italic">exclusion</span> of files as could check during the import if
+                  <span style="font-style: italic">exclusion</span> of files as it could check during the import if
                   excluded and skip
                 </li>
                 <li><span style="font-style: italic">generate code</span> from JSONSpec/OpenAPI during the import</li>
                 <li>
                   <span style="font-style: italic">recompile/build</span> C-extension modules on import if the source
-                  file has been updated since last build
+                  file has been changed since last build
                 </li>
               </ul>
             </li>
@@ -1128,7 +1129,7 @@
             pip wheel -w --no-deps /tmp/prj
             pyproject-build -w .
             </code></pre>
-            In order to build a wheel two distinct components work together:
+            In order to build a wheel, two distinct components work together:
             <li class="fragment">
               build backend (<a href="https://pypi.org/project/setuptools">setuptools</a>,
               <a href="https://pypi.org/project/hatchling">hatchling</a>,
@@ -1165,7 +1166,7 @@
                       perform the wheel build
                       <pre style="font-size: 0.44em"><code class="lang-python" data-trim data-noescape>
                       def build_wheel(wheel_directory, config_settings=None, metadata_directory=None):
-                          ...  # e.g. for setuptools call python setup.py bdist_wheel
+                          ...  # e.g., for setuptools call python setup.py bdist_wheel
                       </code></pre>
                     </li>
                   </ul>
@@ -1305,7 +1306,7 @@
               </ul>
             </li>
             <li class="fragment">
-              In the end we created two proposals:
+              In the end, we created two proposals:
               <ul>
                 <li>
                   Backend does most of it -
@@ -1332,14 +1333,14 @@
               </code></pre>
             </li>
             <li>
-              Add an endpoint that can provide the editable wheels metadata without building it
+              Adds an endpoint that can provide the editable wheels metadata without building it
               <pre><code class="lang-python" data-trim data-noescape>
               def prepare_metadata_for_build_editable(metadata_directory, config_settings=None):
                   ...
             </code></pre>
             </li>
             <li>
-              Add an endpoint that builds the editable wheel
+              Adds an endpoint that builds the editable wheel
               <pre><code class="lang-python" data-trim data-noescape>
               def build_editable(wheel_directory, config_settings=None, metadata_directory=None):
                 ...
@@ -1395,7 +1396,7 @@
             </li>
             <li class="fragment">Backend may expose multiple ways, select via config_settings arg of build_editable</li>
             <li class="fragment">
-              Backends can reuse/delegate editable logic via libraries (e.g.
+              Backends can reuse/delegate editable logic via libraries (e.g.,
               <span style="font-style: italic">editables</span>)
             </li>
             <li class="fragment">
@@ -1430,7 +1431,7 @@
             </li>
             <li class="fragment">The JSON file tells the frontend what files need to be mapped and where</li>
             <li class="fragment">
-              It's up to the frotnend how it makes it happen, and should allow user to select:
+              It's up to the frontend how it makes it happen, and should allow user to select:
               <pre><code class="lang-json" data-trim data-noescape>
                 pip install -e /prj --mode=symlink|pth|hook
                 </code></pre>
@@ -1452,7 +1453,7 @@
               Paul Moore is the BDFL for packaging PEPs <br />
               <img data-src="img/paul.png" style="margin-bottom: 0; border-bottom: 0" />
             </li>
-            <li>2 weeks cooldown period</li>
+            <li>two week cooldown period</li>
             <li>
               <a href="https://discuss.python.org/t/pronouncement-on-peps-660-and-662-editable-installs/9450"
                 >PEP-660 announced as winner</a
@@ -1546,10 +1547,9 @@
 
         <section>
           <h1>we're hiring</h1>
-          <h3><a href="https://bloomberg.com/engineering">https://bloomberg.com/engineering</a></h3>
-
+          <h3><a href="https://www.TechAtBloomberg.com/python">TechAtBloomberg.com/python</a></h3>
+          <h3><a href="https://bloomberg.com/engineering">bloomberg.com/engineering</a></h3>
           <p>
-            see <a href="https://TechAtBloomberg.com">TechAtBloomberg.com</a> /
             <a href="https://twitter.com/techatbloomberg">@TechAtBloomberg</a>
           </p>
         </section>
