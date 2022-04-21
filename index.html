@@ -89,67 +89,6 @@
         </section>
 
         <section>
-          <h3>Maintainer (author *) of Python OSS projects</h3>
-          <ul class="maintain">
-            <li>
-              <a href="https://github.com/platformdirs/platformdirs"><strong>platformdirs</strong></a> -
-              <a href="https://pypistats.org/packages/platformdirs">
-                <img src="https://img.shields.io/pypi/dm/platformdirs?style=flat-square" alt="PyPI - Downloads" />
-              </a>
-            </li>
-            <li>
-              <a href="https://github.com/tox-dev/py-filelock"><strong>filelock</strong></a> –
-              <a href="https://pypistats.org/packages/filelock">
-                <img src="https://img.shields.io/pypi/dm/filelock?style=flat-square" alt="PyPI - Downloads" />
-              </a>
-            </li>
-
-            <li>
-              <a href="https://github.com/pypa/virtualenv"><strong>virtualenv</strong></a> -
-              <a href="https://pypistats.org/packages/virtualenv">
-                <img src="https://img.shields.io/pypi/dm/virtualenv?style=flat-square" alt="PyPI - Downloads" />
-              </a>
-            </li>
-            <li>
-              <a href="https://github.com/tox-dev/tox"><strong>tox</strong></a> -
-              <a href="https://pypistats.org/packages/tox">
-                <img src="https://img.shields.io/pypi/dm/tox?style=flat-square" alt="PyPI - Downloads" />
-              </a>
-            </li>
-            <li>
-              <a href="https://github.com/pypa/build">build</a> -
-              <a href="https://pypistats.org/packages/build"
-                ><img src="https://img.shields.io/pypi/dm/build?style=flat-square" alt="PyPI - Downloads"
-              /></a>
-            </li>
-            <li>
-              <a href="https://github.com/tox-dev/sphinx-autodoc-typehints"
-                ><strong>sphinx-autodoc-typehints</strong></a
-              >
-              -
-              <a href="https://pypistats.org/packages/sphinx-autodoc-typehints"
-                ><img
-                  src="https://img.shields.io/pypi/dm/sphinx-autodoc-typehints?style=flat-square"
-                  alt="PyPI - Downloads"
-              /></a>
-            </li>
-            <li>
-              <a href="https://github.com/pypa/pipx">pipx</a> -
-              <a href="https://pypistats.org/packages/pipx"
-                ><img src="https://img.shields.io/pypi/dm/pipx?style=flat-square" alt="PyPI - Downloads"
-              /></a>
-            </li>
-            <li>
-              <a href="https://github.com/pypa/flit">flit</a> -
-              <a href="https://pypistats.org/packages/flit"
-                ><img src="https://img.shields.io/pypi/dm/flit?style=flat-square" alt="PyPI - Downloads"
-              /></a>
-            </li>
-            <li>...</li>
-          </ul>
-        </section>
-
-        <section>
           <h1>What is an editable installation?</h1>
         </section>
 
@@ -178,6 +117,7 @@
               </code></pre>
             </li>
             <li>
+              Project metadata in
               <span style="font-style: italic"
                 >pyproject.toml <a href="https://peps.python.org/pep-0621/">(PEP-621 style)</a></span
               >
@@ -201,7 +141,7 @@
             <li class="fragment">
               How do we run it?
               <pre><code class="lang-bash" data-trim data-noescape>
-              $ python -c 'from demo import say_hi; say_hi("Me")'
+              $ python -c 'from demo import say_hi; say_hi("PyCon")'
               Traceback (most recent call last):
                 File "&lt;string&gt;", line 1, in &lt;module&gt;
               ModuleNotFoundError: No module named 'demo'
@@ -213,7 +153,7 @@
         <section>
           <h3>What is an editable installation?</h3>
           <ol>
-            To test the library, we need to install it in an isolated virtual environment. For example:
+            To test the library, we need to install it (in an isolated virtual environment). For example:
             <li class="fragment">
               create isolated virtual environment
               <pre><code class="lang-bash" data-trim data-noescape>
@@ -225,7 +165,7 @@
               </code></pre>
             </li>
             <li class="fragment">
-              install the library
+              install the project by using pip
               <pre><code class="lang-bash" data-trim data-noescape>
                 $ venv/bin/pip install .
                 Processing /tmp/prj
@@ -244,8 +184,8 @@
             <li class="fragment">
               run the test code
               <pre><code class="lang-bash" data-trim data-noescape>
-              $ venv/bin/python -c 'from demo import say_hi; say_hi("Me")'
-              Hello Me
+              $ venv/bin/python -c 'from demo import say_hi; say_hi("PyCon")'
+              Hello PyCon
               </code></pre>
             </li>
           </ol>
@@ -265,13 +205,13 @@
             <li>
               and run the test code again
               <pre><code class="lang-bash" data-trim data-noescape>
-              $ venv/bin/python -c 'from demo import say_hi; say_hi("Me")'
-              Hello Me
+              $ venv/bin/python -c 'from demo import say_hi; say_hi("PyCon")'
+              Hello PyCon
               </code></pre>
             </li>
             <div class="fragment">
               <li>
-                install the library
+                <mark>install the library</mark>
                 <pre><code class="lang-bash" data-trim data-noescape>
                   $ venv/bin/pip install .
                   Processing /tmp/prj
@@ -290,8 +230,8 @@
               <li>
                 run the test code
                 <pre><code class="lang-bash" data-trim data-noescape>
-                $ venv/bin/python -c 'from demo import say_hi; say_hi("Me")'
-                Hello Me!
+                $ venv/bin/python -c 'from demo import say_hi; say_hi("PyCon")'
+                Hello PyCon!
                 </code></pre>
               </li>
             </div>
@@ -303,7 +243,7 @@
           <ul>
             <li>
               Having to install the project after every code change slows down development <br />
-              <div class="fragment">
+              <div>
                 <img
                   data-src="img/better_way.gif"
                   style="margin-left: auto; margin-right: auto; display: block; width: 50%"
@@ -343,8 +283,8 @@
               <li>
                 run the test code
                 <pre><code class="lang-bash" data-trim data-noescape>
-                $ venv/bin/python -c 'from demo import say_hi; say_hi("Me")'
-                Hello Me
+                $ venv/bin/python -c 'from demo import say_hi; say_hi("PyCon")'
+                Hello PyCon
                 </code></pre>
               </li>
               <li>
@@ -357,8 +297,8 @@
               <li>
                 run the test code
                 <pre><code class="lang-bash" data-trim data-noescape>
-                $ venv/bin/python -c 'from demo import say_hi; say_hi("Me")'
-                Hello Me!
+                $ venv/bin/python -c 'from demo import say_hi; say_hi("PyCon")'
+                Hello PyCon!
                 </code></pre>
               </li>
             </div>
@@ -400,7 +340,17 @@
 
         <section>
           <h2>Prior art - Normal installation</h2>
-
+          <!-- prettier-ignore -->
+          <div class="mermaid">
+            graph LR
+              S[Source directory]
+              W[Wheel]
+              SP[site-packages]
+              P[Python executable]
+              S -->|build via copy| W
+              W -->|install via extract| SP
+              SP -.-|import demo| P
+          </div>
           <pre><code class="lang-bash" data-trim data-noescape>
            .
           ├──  pyproject.toml
@@ -409,17 +359,17 @@
                 └──  __init__.py
           </code></pre>
           <pre><code class="lang-bash" data-trim data-noescape>
-          $ venv/bin/pip install .
+          $ <mark>venv/bin/pip install .</mark>
           Processing /tmp/prj
             Installing build dependencies ... done
             Getting requirements to build wheel ... done
             Preparing metadata (pyproject.toml) ... done
-          Building <mark>wheels</mark> for collected packages: demo
+          <mark>Building wheels for collected packages: demo</mark>
             Building wheel for demo (pyproject.toml) ... done
-            <mark>Created wheel for demo: filename=demo-1.0-py2.py3-none-any.whl size=1089 sha256=4af9f4008bef1f029f9ae06fdd752a1e36c</mark>
+            Created wheel for demo: filename=demo-1.0-py2.py3-none-any.whl size=1089 sha256=4af9f4008bef1f029f9ae06fdd752a1e36c
             Stored in directory: /tmp/pip-ephem-wheel-cache-1t02m0nm/wheels/41/8a/ba/ffb94b3ccf1b5c11339bf57ad6563
           Successfully built demo
-          Installing collected packages: demo
+          <mark>Installing collected packages: demo</mark>
           Successfully installed demo-1.0
           </code></pre>
 
@@ -436,7 +386,17 @@
 
         <section>
           <h2>Prior art - Normal installation</h2>
-
+          <!-- prettier-ignore -->
+          <div class="mermaid">
+            graph LR
+              S[Source directory]
+              W[Wheel]
+              SP[site-packages]
+              P[Python executable]
+              S -->|build via copy| W
+              W -->|install via extract| SP
+              SP -.-|import demo| P
+          </div>
           <pre><code class="lang-bash" data-trim data-noescape>
            .
           ├──  pyproject.toml
@@ -445,17 +405,17 @@
                 └──  __init__.py
           </code></pre>
           <pre><code class="lang-bash" data-trim data-noescape>
-          $ venv/bin/pip install .
+          $ <mark>venv/bin/pip install .</mark>
           Processing /tmp/prj
             Installing build dependencies ... done
             Getting requirements to build wheel ... done
             Preparing metadata (pyproject.toml) ... done
-          Building <mark>wheels</mark> for collected packages: demo
+          <mark>Building wheels for collected packages: demo</mark>
             Building wheel for demo (pyproject.toml) ... done
-            <mark>Created wheel for demo: filename=demo-1.0-py2.py3-none-any.whl size=1089 sha256=4af9f4008bef1f029f9ae06fdd752a1e36c</mark>
+            Created wheel for demo: filename=demo-1.0-py2.py3-none-any.whl size=1089 sha256=4af9f4008bef1f029f9ae06fdd752a1e36c
             Stored in directory: /tmp/pip-ephem-wheel-cache-1t02m0nm/wheels/41/8a/ba/ffb94b3ccf1b5c11339bf57ad6563
           Successfully built demo
-          Installing collected packages: demo
+          <mark>Installing collected packages: demo</mark>
           Successfully installed demo-1.0
           </code></pre>
 
@@ -469,26 +429,21 @@
           demo-1.0.dist-info/RECORD</mark>
           </code></pre>
         </section>
+
         <section>
           <h2>Prior art - Normal installation</h2>
+          <!-- prettier-ignore -->
+          <div class="mermaid">
+            graph LR
+              S[Source directory]
+              W[Wheel]
+              SP[site-packages]
+              P[Python executable]
+              S -->|build via copy| W
+              W -->|install via extract| SP
+              SP -.-|import demo| P
+          </div>
           <pre><code class="lang-bash" data-trim data-noescape>
-            $ venv/bin/pip install .
-            Processing /tmp/prj
-              Installing build dependencies ... done
-              Getting requirements to build wheel ... done
-              Preparing metadata (pyproject.toml) ... done
-            Building wheels for collected packages: demo
-              Building wheel for demo (pyproject.toml) ... done
-              Created wheel for demo: filename=demo-1.0-py2.py3-none-any.whl size=1089 sha256=4af9f4008bef1f029f9ae06fdd752a1e36c
-              Stored in directory: /tmp/pip-ephem-wheel-cache-1t02m0nm/wheels/41/8a/ba/ffb94b3ccf1b5c11339bf57ad6563
-            Successfully built demo
-            <mark>Installing collected packages: demo</mark>
-            Successfully installed demo-1.0
-
-            </code></pre>
-
-          <pre><code class="lang-bash" data-trim data-noescape>
-
               $ zipinfo -1 demo-1.0-py2.py3-none-any.whl
               demo/__init__.py
               demo-1.0.dist-info/METADATA
@@ -517,24 +472,18 @@
 
         <section>
           <h2>Prior art - Normal installation</h2>
+          <!-- prettier-ignore -->
+          <div class="mermaid">
+            graph LR
+              S[Source directory]
+              W[Wheel]
+              SP[site-packages]
+              P[Python executable]
+              S -->|build via copy| W
+              W -->|install via extract| SP
+              SP -.-|import demo| P
+          </div>
           <pre><code class="lang-bash" data-trim data-noescape>
-            $ venv/bin/pip install .
-            Processing /tmp/prj
-              Installing build dependencies ... done
-              Getting requirements to build wheel ... done
-              Preparing metadata (pyproject.toml) ... done
-            Building wheels for collected packages: demo
-              Building wheel for demo (pyproject.toml) ... done
-              Created wheel for demo: filename=demo-1.0-py2.py3-none-any.whl size=1089 sha256=4af9f4008bef1f029f9ae06fdd752a1e36c
-              Stored in directory: /tmp/pip-ephem-wheel-cache-1t02m0nm/wheels/41/8a/ba/ffb94b3ccf1b5c11339bf57ad6563
-            Successfully built demo
-            <mark>Installing collected packages: demo</mark>
-            Successfully installed demo-1.0
-
-            </code></pre>
-
-          <pre><code class="lang-bash" data-trim data-noescape>
-
               $ zipinfo -1 demo-1.0-py2.py3-none-any.whl
               <mark>demo/__init__.py</mark>
               demo-1.0.dist-info/METADATA
@@ -563,22 +512,17 @@
 
         <section>
           <h2>Prior art - Normal installation</h2>
-          <pre><code class="lang-bash" data-trim data-noescape>
-            $ venv/bin/pip install .
-            Processing /tmp/prj
-              Installing build dependencies ... done
-              Getting requirements to build wheel ... done
-              Preparing metadata (pyproject.toml) ... done
-            Building wheels for collected packages: demo
-              Building wheel for demo (pyproject.toml) ... done
-              Created wheel for demo: filename=demo-1.0-py2.py3-none-any.whl size=1089 sha256=4af9f4008bef1f029f9ae06fdd752a1e36c
-              Stored in directory: /tmp/pip-ephem-wheel-cache-1t02m0nm/wheels/41/8a/ba/ffb94b3ccf1b5c11339bf57ad6563
-            Successfully built demo
-            <mark>Installing collected packages: demo</mark>
-            Successfully installed demo-1.0
-
-            </code></pre>
-
+          <!-- prettier-ignore -->
+          <div class="mermaid">
+            graph LR
+              S[Source directory]
+              W[Wheel]
+              SP[site-packages]
+              P[Python executable]
+              S -->|build via copy| W
+              W -->|install via extract| SP
+              SP -.-|import demo| P
+          </div>
           <pre><code class="lang-bash" data-trim data-noescape>
 
               $ zipinfo -1 demo-1.0-py2.py3-none-any.whl
@@ -605,22 +549,18 @@
             ├──  REQUESTED
             └──  WHEEL</mark>
             </code></pre>
-
-          <!-- prettier-ignore -->
-          <div class="mermaid">
-            graph LR
-              S[Source directory]
-              W[Built wheel]
-              SP[site-packages]
-              P[Python executable]
-              S -->|copy| W
-              W -->|extract - copy| SP
-              SP -.-|import demo| P
-          </div>
         </section>
 
         <section>
           <h2>Prior art - Editable installation</h2>
+          <!-- prettier-ignore -->
+          <div class="mermaid">
+            graph LR
+              S[Source directory]
+              P[Python executable]
+              S -.-|import demo| P
+              S -->|build metadata and install pth file to resolve imports| S
+          </div>
           <pre><code class="lang-bash" data-trim data-noescape>
              .
             ├──  setup.py
@@ -632,24 +572,18 @@
 
           <pre><code class="lang-python" data-trim data-noescape>
           from setuptools import setup
-
           setup(
               name="demo",
               version="1.0",
               package_dir={"": "src"},
-              packages=["demo"],
-          )
+              packages=["demo"])
            </code></pre>
 
           <br />
-
           <pre><code class="lang-bash" data-trim data-noescape>
            $ virtualenv venv --clear --no-wheel --pip 21.2 --activators ""
            created virtual environment CPython3.10.4.final.0-64 in 101ms
            added seed packages: pip==21.2, setuptools==62.1.0
-          </code></pre>
-          <br />
-          <pre><code class="lang-bash" data-trim data-noescape>
            $ venv/bin/pip install -e .
            Obtaining file:///home/bernat/git/pep-660-662-2022/prj
            Installing collected packages: demo
@@ -660,40 +594,6 @@
 
         <section>
           <h2>Prior art - Editable installation</h2>
-          <pre><code class="lang-bash" data-trim data-noescape>
-             .
-            ├──  setup.py
-            └──  src
-              ├──  demo
-              │  └──  __init__.py
-              <mark>└──  demo.egg-info
-                  ├──  dependency_links.txt
-                  ├──  PKG-INFO
-                  ├──  SOURCES.txt
-                  └──  top_level.txt</mark>
-            </code></pre>
-
-          <br />
-
-          <pre><code class="lang-bash" data-trim data-noescape>
-            $ cat <mark>venv/lib/python3.10/site-packages/easy-install.pth</mark>
-            /tmp/prj/src
-            </code></pre>
-          <br />
-          <pre><code class="lang-bash" data-trim data-noescape>
-          $ venv/bin/python -m site
-          sys.path = [
-              '/tmp/prj',
-              '/usr/lib/python310.zip',
-              '/usr/lib/python3.10',
-              '/usr/lib/python3.10/lib-dynload',
-              '/tmp/prj/venv/lib/python3.10/site-packages',
-              <mark>'/tmp/prj/src',</mark>
-          ]
-          USER_BASE: '/home/bernat/.local' (exists)
-          USER_SITE: '/home/bernat/.local/lib/python3.10/site-packages' (exists)
-          ENABLE_USER_SITE: False
-          </code></pre>
           <!-- prettier-ignore -->
           <div class="mermaid">
             graph LR
@@ -702,10 +602,6 @@
               S -.-|import demo| P
               S -->|build metadata and install pth file to resolve imports| S
           </div>
-        </section>
-
-        <section>
-          <h2>Prior art - Editable installation</h2>
           <pre><code class="lang-bash" data-trim data-noescape>
              .
             ├──  setup.py
@@ -740,7 +636,10 @@
           USER_SITE: '/home/bernat/.local/lib/python3.10/site-packages' (exists)
           ENABLE_USER_SITE: False
           </code></pre>
+        </section>
 
+        <section>
+          <h2>Prior art - Editable installation</h2>
           <!-- prettier-ignore -->
           <div class="mermaid">
             graph LR
@@ -749,17 +648,48 @@
               S -.-|import demo| P
               S -->|build metadata and install pth file to resolve imports| S
           </div>
+          <pre><code class="lang-bash" data-trim data-noescape>
+             .
+            ├──  setup.py
+            └──  src
+              ├──  demo
+              │  └──  __init__.py
+              <mark>└──  demo.egg-info
+                  ├──  dependency_links.txt
+                  ├──  PKG-INFO
+                  ├──  SOURCES.txt
+                  └──  top_level.txt</mark>
+            </code></pre>
+
+          <br />
+
+          <pre><code class="lang-bash" data-trim data-noescape>
+            $ cat <mark>venv/lib/python3.10/site-packages/easy-install.pth</mark>
+            /tmp/prj/src
+            </code></pre>
+          <br />
+          <pre><code class="lang-bash" data-trim data-noescape>
+          $ venv/bin/python -m site
+          sys.path = [
+              '/tmp/prj',
+              '/usr/lib/python310.zip',
+              '/usr/lib/python3.10',
+              '/usr/lib/python3.10/lib-dynload',
+              '/tmp/prj/venv/lib/python3.10/site-packages',
+              <mark>'/tmp/prj/src',</mark>
+          ]
+          USER_BASE: '/home/bernat/.local' (exists)
+          USER_SITE: '/home/bernat/.local/lib/python3.10/site-packages' (exists)
+          ENABLE_USER_SITE: False
+          </code></pre>
         </section>
 
         <section>
-          <h2>Is this problem solved?</h2>
-          <ul>
-            <li>
-              No, because the solution still requires the presence of the legacy
-              <span style="font-style: italic">setup.py</span> file
-            </li>
-            <li>What an editable installation is and how it should work was never agreed upon</li>
-            <li>Prior art is an implementation detail of a tool</li>
+          <h2>Is this problem solved? <span class="fragment" style="color: red">No!</span></h2>
+          <ul class="fragment">
+            <li>Requires <span style="font-style: italic">setup.py</span> file</li>
+            <li class="fragment">What an editable installation is and how it should work was never agreed upon</li>
+            <li class="fragment">Prior art is an implementation detail of a setuptools</li>
             <li class="fragment">
               Why did we not do it before? <span class="fragment">We did try!</span
               ><span class="fragment"> (more than once)</span>
@@ -1053,8 +983,10 @@
           <ul>
             <li>We're importing modules, not files, let's use that!</li>
             <li>Extend the import system to manifest the module at import time</li>
-            <li>Fully dynamic (load packaging config at first import, and validate config/file system)!</li>
-            <li>
+            <li class="fragment">
+              Fully dynamic (load packaging config at first import, and validate config/file system)!
+            </li>
+            <li class="fragment">
               Brainstormed together with Paul Moore in 2020 - he released it as the
               <a href="https://pypi.org/project/editables">editables</a> library
             </li>
@@ -1085,29 +1017,26 @@
               F.map_module('demo', '/tmp/prj/src/demo/__init__.py')   # register module name to source file
               </code></pre>
             </li>
+          </ul>
+        </section>
+        <section>
+          <h2>Import hooks</h2>
+          <ul>
+            <li>
+              <span style="font-style: italic">addition</span> of new files as it would check during import if exists
+            </li>
             <li class="fragment">
-              Solves (all) our problems, it as supports:
-              <ul>
-                <li>
-                  <span style="font-style: italic">addition</span> of new files as it would check during import if
-                  exists
-                </li>
-                <li>
-                  <span style="font-style: italic">exclusion</span> of files as it could check during the import if
-                  excluded and skip
-                </li>
-                <li><span style="font-style: italic">generate code</span> from JSONSpec/OpenAPI during the import</li>
-                <li>
-                  <span style="font-style: italic">recompile/build</span> C-extension modules on import if the source
-                  file has been changed since last build
-                </li>
-              </ul>
+              <span style="font-style: italic">exclusion</span> of files as it could check during the import if excluded
+              and skip
+            </li>
+            <li class="fragment">
+              <span style="font-style: italic">generate code</span> from JSONSpec/OpenAPI during the import
+            </li>
+            <li class="fragment">
+              <span style="font-style: italic">recompile/build</span> C-extension modules on import if the source file
+              has been changed since last build
             </li>
           </ul>
-
-          <br />
-
-          <br />
         </section>
 
         <section>
@@ -1131,9 +1060,8 @@
             </code></pre>
             In order to build a wheel, two distinct components work together:
             <li class="fragment">
-              build backend (<a href="https://pypi.org/project/setuptools">setuptools</a>,
-              <a href="https://pypi.org/project/hatchling">hatchling</a>,
-              <a href="https://pypi.org/project/flit">flit</a>, <a href="https://pypi.org/project/poetry">poetry</a>)
+              build backend (e.g., <a href="https://pypi.org/project/setuptools">setuptools</a>,
+              <a href="https://pypi.org/project/hatchling">hatchling</a>)
               <br />
               load project configuration and build the wheel file
             </li>
@@ -1332,23 +1260,12 @@
                   ...
               </code></pre>
             </li>
-            <li>
-              Adds an endpoint that can provide the editable wheels metadata without building it
-              <pre><code class="lang-python" data-trim data-noescape>
-              def prepare_metadata_for_build_editable(metadata_directory, config_settings=None):
-                  ...
-            </code></pre>
-            </li>
-            <li>
+            <li class="fragment">
               Adds an endpoint that builds the editable wheel
               <pre><code class="lang-python" data-trim data-noescape>
               def build_editable(wheel_directory, config_settings=None, metadata_directory=None):
                 ...
               </code></pre>
-            </li>
-            <li>
-              Mandate the frontend to create <span style="font-style: italic">direct_url.json</span> in the
-              <span style="font-style: italic">.dist-info</span> folder
             </li>
           </ul>
         </section>
@@ -1379,7 +1296,6 @@
               </code></pre>
             </li>
             <li class="fragment">Wheel installed into test environment via an installer per existing standards</li>
-            <li class="fragment">Frontend creates <span style="font-style: italic">direct_url.json</span></li>
           </ol>
         </section>
 
@@ -1394,7 +1310,11 @@
                 <li>import hook</li>
               </ul>
             </li>
-            <li class="fragment">Backend may expose multiple ways, select via config_settings arg of build_editable</li>
+            <li class="fragment">
+              Backend may expose multiple ways (change via
+              <span style="font-style: italic">config_settings</span> arg of
+              <span style="font-style: italic">build_editable</span>)
+            </li>
             <li class="fragment">
               Backends can reuse/delegate editable logic via libraries (e.g.,
               <span style="font-style: italic">editables</span>)
@@ -1453,14 +1373,16 @@
               Paul Moore is the BDFL for packaging PEPs <br />
               <img data-src="img/paul.png" style="margin-bottom: 0; border-bottom: 0" />
             </li>
-            <li>two week cooldown period</li>
-            <li>
+            <li>one week cooldown period</li>
+            <li class="fragment">
               <a href="https://discuss.python.org/t/pronouncement-on-peps-660-and-662-editable-installs/9450"
                 >PEP-660 announced as winner</a
               >
               on June 2021
+              <ul>
+                <li>Primary reason given was that PEP-662 left the frontends tasks too open</li>
+              </ul>
             </li>
-            <li>Primary reason given was that PEP-662 left the frontends tasks too open</li>
           </ul>
         </section>
 
@@ -1482,11 +1404,7 @@
             <li>
               Build backend support
               <ul>
-                <li>pdm since 0.8 - 2021 June</li>
-                <li>enscons since 0.26 - 2021 August</li>
-                <li>flit since 3.4 - 2021 October</li>
-                <li>hatchling since 0.3 - 2021 December</li>
-                <li>poetry since 1.1 - 2022 March</li>
+                <li>hatchling, pdm, enscons, flit, poetry</li>
                 <li class="fragment">
                   <a href="https://discuss.python.org/t/implementing-pep-660-for-setuptools/9193"
                     >setuptools adoption stalled</a
@@ -1517,9 +1435,8 @@
               <ul>
                 <li>
                   <a href="https://discuss.python.org/t/pep-660-support-and-ides/13878/6"
-                    >would require some static paths</a
+                    >would require generating some static metadata - best effort support</a
                   >
-                  - <span style="font-style: italic">editables.json</span>
                 </li>
               </ul>
             </li>
